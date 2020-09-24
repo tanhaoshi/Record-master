@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data class=".tally.module.fund.AdapterIndexOfBinding">
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="activity"
+            type="android.app.Activity"/>
+
+        <variable
+            name="data"
+            type="com.coderpage.mine.app.tally.persistence.model.FundModel"/>
+
+        <variable
+            name="vm"
+            type="com.coderpage.mine.app.tally.module.investment.model.IndexFundViewModel" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:onClick="@{(v) -> vm.onItemClick(v,activity,data)}"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:padding="@dimen/padding_micro">
+        <!-- 分类名称 -->
+        <TextView
+            android:id="@+id/tvCategoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:gravity="start|center_vertical"
+            android:text="@{data.fundName}"
+            android:textColor="@color/appTextColorPrimary"
+            android:textSize="@dimen/app_text_size_large"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="购物" />
+        <!-- 金额 -->
+        <TextView
+            android:id="@+id/etAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@{data.fundPercent}"
+            android:paddingEnd="2dp"
+            android:textColor="@color/appTextColorPrimary"
+            android:textSize="@dimen/app_text_size_normal"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="日涨幅"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

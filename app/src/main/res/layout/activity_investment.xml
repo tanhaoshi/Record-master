@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data class=".app.tally.module.investment.InvestmentActivityBinding">
+        <variable
+            name="activity"
+            type="android.support.v4.app.FragmentActivity" />
+
+        <variable
+            name="vm"
+            type="com.coderpage.mine.app.tally.module.investment.model.InvestmentModel" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".app.tally.investment.InvestmentActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            app:elevation="0dp"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleEnabled="false"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:alpha="0" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/indexRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp">
+                    </android.support.v7.widget.RecyclerView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/indexUSARecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp">
+                    </android.support.v7.widget.RecyclerView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/indexHKRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp">
+                    </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.Toolbar
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/toolbar"
+                    style="@style/Widget.Toolbar"
+                    app:layout_collapseMode="pin"
+                    android:layout_width="match_parent"
+                    app:titleTextColor="@color/appTextColorPrimary"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"/>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <RelativeLayout
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fundRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

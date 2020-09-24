@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data class=".tally.module.index.IndexItemOutsideBinding">
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="activity"
+            type="android.app.Activity"/>
+
+        <variable
+            name="data"
+            type="com.coderpage.mine.app.tally.persistence.model.IndexModel" />
+
+        <variable
+            name="VM"
+            type="com.coderpage.mine.app.tally.module.investment.model.IndexOutsideViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:onClick="@{(v) -> VM.onItemClick(data,activity)}"
+        android:layout_width="130dp"
+        android:layout_height="96dp">
+
+        <TextView
+            android:id="@+id/fund_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="6dp"
+            android:text="@{data.indexName}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/fund_desc"
+            app:layout_constraintTop_toBottomOf="@+id/fund_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="6dp"
+            android:textSize="22sp"
+            android:text="@{data.indexNumber}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/increase"
+            app:layout_constraintTop_toBottomOf="@+id/fund_desc"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintRight_toLeftOf="@+id/increasePercent"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="4dp"
+            android:text="@{data.indexRange}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/increasePercent"
+            app:layout_constraintTop_toBottomOf="@+id/fund_desc"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toRightOf="@+id/increase"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="4dp"
+            android:text="@{data.indexPercent}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

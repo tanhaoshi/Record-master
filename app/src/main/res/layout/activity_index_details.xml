@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data class=".tally.module.index.IndexDetailsActivityBinding">
+        <variable
+            name="VM"
+            type="com.coderpage.mine.app.tally.module.index.IndexDetailsViewModel" />
+    </data>
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootLayout"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            app:elevation="0dp"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleEnabled="false"
+                android:fitsSystemWindows="true"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll">
+
+                <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/scrollView"
+                    android:overScrollMode="never"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            android:alpha="0" />
+
+                        <LinearLayout
+                            android:id="@+id/projectLayout"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/indexTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="近一周涨幅"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/black"
+                                tools:text="近一周涨幅"/>
+
+                            <TextView
+                                android:id="@+id/indexWeek"
+                                android:background="@null"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColorHint="@color/colorHint"
+                                android:textColor="@color/black"
+                                android:gravity="center_vertical|end"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="6dp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/person_gray_color"/>
+
+                        <LinearLayout
+                            android:background="?android:attr/selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="近一月涨幅"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/black"
+                                tools:text="近一月涨幅"/>
+
+                            <TextView
+                                android:id="@+id/indexMouth"
+                                android:background="@null"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColorHint="@color/colorHint"
+                                android:textColor="@color/black"
+                                android:gravity="center_vertical|end"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="6dp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/person_gray_color"/>
+
+                        <LinearLayout
+                            android:background="?android:attr/selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="近三月涨幅"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/black"
+                                tools:text="近三月涨幅"/>
+
+                            <TextView
+                                android:id="@+id/indexThreeMouth"
+                                android:background="@null"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColorHint="@color/colorHint"
+                                android:textColor="@color/black"
+                                android:gravity="center_vertical|end"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="6dp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/person_gray_color"/>
+
+                        <LinearLayout
+                            android:background="?android:attr/selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="近半年涨幅"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/black"
+                                tools:text="近半年涨幅"/>
+
+                            <TextView
+                                android:id="@+id/indexHalfYear"
+                                android:background="@null"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColorHint="@color/colorHint"
+                                android:textColor="@color/black"
+                                android:gravity="center_vertical|end"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="6dp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/person_gray_color"/>
+
+                        <LinearLayout
+                            android:background="?android:attr/selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="近一年涨幅"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/black"
+                                tools:text="近一年涨幅"/>
+
+                            <TextView
+                                android:id="@+id/indexYear"
+                                android:background="@null"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColorHint="@color/colorHint"
+                                android:textColor="@color/black"
+                                android:gravity="center_vertical|end"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="6dp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/person_gray_color"/>
+
+                        <LinearLayout
+                            android:background="?android:attr/selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="近三年涨幅"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/black"
+                                tools:text="近三年涨幅"/>
+
+                            <TextView
+                                android:id="@+id/indexThreeYear"
+                                android:background="@null"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColorHint="@color/colorHint"
+                                android:textColor="@color/black"
+                                android:gravity="center_vertical|end"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="6dp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/person_gray_color"/>
+
+                        <LinearLayout
+                            android:background="?android:attr/selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="近五年涨幅"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/black"
+                                tools:text="近五年涨幅"/>
+
+                            <TextView
+                                android:id="@+id/indexFiveYear"
+                                android:background="@null"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColorHint="@color/colorHint"
+                                android:textColor="@color/black"
+                                android:gravity="center_vertical|end"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="6dp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/person_gray_color"/>
+
+                        <LinearLayout
+                            android:background="?android:attr/selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:orientation="horizontal"
+                            android:padding="10dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="成立来"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/black"
+                                tools:text="成立来"/>
+
+                            <TextView
+                                android:id="@+id/indexStart"
+                                android:background="@null"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColorHint="@color/colorHint"
+                                android:textColor="@color/black"
+                                android:gravity="center_vertical|end"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="6dp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/person_gray_color"/>
+
+                    </LinearLayout>
+
+                </android.support.v4.widget.NestedScrollView>
+
+                <android.support.v7.widget.Toolbar
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/toolbar"
+                    style="@style/Widget.Toolbar"
+                    android:layout_width="match_parent"
+                    app:titleTextColor="@color/appTextColorPrimary"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:layout_collapseMode="pin"/>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>
