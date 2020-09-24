@@ -1,6 +1,7 @@
 package com.coderpage.mine.app.tally.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 
 import com.coderpage.base.utils.ResUtils;
@@ -211,5 +212,62 @@ public class DateUtils {
         SimpleDateFormat dayFormat = new SimpleDateFormat(
                 ResUtils.getString(context, dateFormatResId), Locale.getDefault());
         return dayFormat.format(new Date(startTimeMills)) + "~" + dayFormat.format(new Date(endTimeMillis));
+    }
+
+    /**
+     * 获取本周的第一天
+     */
+    public static long getCurrentWeekOneDay(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK,1);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取本周最后一天
+     */
+    public static long getCurrentWeekLastDay(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getActualMaximum(Calendar.DAY_OF_WEEK));
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取本月第一天 (年 类似这么写)
+     */
+    public static long getCurrentMonthFirstDay(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        return cal.getTime().getTime();
+    }
+
+    /**
+     * 获取本月的最后一天 (年 类似这么写)
+     */
+    public static long getCurrentMonthLastDay(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH,cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return cal.getTimeInMillis();
+    }
+
+    /**
+     * 获取某个月前的今天
+     */
+    public static long getUnKnowMonthFirstDay(int month){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, month);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取几年前的今天
+     */
+    public static long getUnKnowYearOneDay(int year){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.YEAR,year);
+        Log.i("DateUtils","look at current day = " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime().getTime()));
+        return cal.getTime().getTime();
     }
 }

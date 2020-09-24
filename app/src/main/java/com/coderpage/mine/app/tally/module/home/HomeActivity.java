@@ -25,6 +25,7 @@ import com.coderpage.mine.app.tally.module.search.SearchActivity;
 import com.coderpage.mine.app.tally.ui.dialog.PermissionReqDialog;
 import com.coderpage.mine.app.tally.ui.refresh.RefreshHeadView;
 import com.coderpage.mine.app.tally.update.UpdateUtils;
+import com.coderpage.mine.app.tally.utils.DateUtils;
 import com.coderpage.mine.ui.BaseActivity;
 import com.coderpage.mine.ui.widget.recyclerview.ItemMarginDecoration;
 import com.coderpage.mine.utils.AndroidUtils;
@@ -66,6 +67,8 @@ public class HomeActivity extends BaseActivity {
         subscribeUi();
 
         mPermissionReqHandler = new PermissionReqHandler(self());
+
+        DateUtils.getUnKnowYearOneDay(-1);
     }
 
     @Override

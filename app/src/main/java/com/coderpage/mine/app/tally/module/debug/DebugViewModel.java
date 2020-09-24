@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.coderpage.base.cache.Cache;
 import com.coderpage.base.utils.LogUtils;
@@ -64,6 +65,7 @@ public class DebugViewModel extends BaseViewModel {
                 int byteread = 0;
 
                 String newPath = Cache.getCacheFolder(getApplication()).getAbsolutePath() + "/记账本.db";
+                Log.i("DebugViewModel","look at path = " + newPath);
                 if (oldfile.exists()) {
                     InputStream inStream = new FileInputStream(oldfile);
                     FileOutputStream fs = new FileOutputStream(newPath);

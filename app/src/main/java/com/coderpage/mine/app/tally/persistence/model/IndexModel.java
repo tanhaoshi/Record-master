@@ -5,6 +5,7 @@ import android.arch.persistence.room.ColumnInfo;
 import com.coderpage.mine.app.tally.persistence.sql.entity.IndexEntity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * create by ths on 2020/9/11

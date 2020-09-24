@@ -23,7 +23,8 @@ public interface IndexDao {
 
     // <= datetime('now','start of day','+0 day','weekday 1')
 
-    // >= datetime('now','start of day','-6day') 查询近一周数据
+    // >= datetime('now','start of day','-6day')
+    // 查询近一周数据
     @Query("select * from indexs where index_type == :type and index_name == :indexName and " +
             "create_time <= datetime('now','start of day','+0 day','weekday 1') ")
     List<IndexModel> getLatelyWeekIndex(String type, String indexName);
@@ -38,6 +39,26 @@ public interface IndexDao {
     List<IndexModel> queryAllIndex(String type,String indexName);
 
     // 查询近一个月的记录
-    @Query("select * from indexs where create_time between datetime('now','-1 month') and datetime('now') and index_type == :type and index_name == :indexName")
+    // select * from indexs where create_time between datetime('now','-1 month') and datetime('now')
+    // select * from indexs where create_time between date('now', "-1 month") and date('now')
+    // between datetime('now','start of month','+1 second') and datetime('now','start of month','+1 month','-1 second')
+    @Query("select * from indexs where create_time between datetime('now','start of month','+1 second') and datetime('now','start of month','+1 month','-1 second')" +
+            " and index_type == :type and index_name == :indexName")
     List<IndexModel> queryLatelyMonth(String type,String indexName);
+
+    // 查询最近三个月的记录
+    @Query("select * from indexs where create_time between datetime('now','-3 month') and datetime('now') and index_type == :type and index_name == :indexName")
+    List<IndexModel> queryThreeMonth(String type,String indexName);
+
+    // 查询最近半年的记录
+    @Query("select * from indexs where create_time between datetime('now','-6 month') and datetime('now') and index_type == :type and index_name == :indexName")
+    List<IndexModel> queryLatelyHalfIndex(String type,String indexName);
+
+    // eg : 查询最近一年的记录  startTime = 2020-1-20 , endTime = 2020-12-30 (将查询指定的区域 在这块区域中 查询)
+    @Query("select * from indexs where datetime(create_time) >= datetime(:startTime) and datetime(create_time) <= datetime(:endTime) " +
+            "and index_type == :type and index_name == :indexName")
+    List<IndexModel> queryLayelyYear(String type,String indexName,String startTime,String endTime);
+
+
+
 }

@@ -39,24 +39,42 @@ class IndexDetailsViewModel(application: Application) : AndroidViewModel(applica
         mRepository = IndexDetailsRepository()
     }
 
+    // 查询最近一周数据 涨幅情况
     fun getLatelyWeek(type: String, indexName: String) {
         mRepository.queryLatelyWeek(type, indexName, SimpleCallback { indexModels ->
             var tempValue : Double = 0.0
 
             for (indexModel in indexModels){
                 if(indexModel.indexIncreaseType == 0){
-                    tempValue = tempValue + (indexModel.indexPercent.toDouble())
+                    tempValue += (indexModel.indexPercent.toDouble())
                 }else{
-                    tempValue = tempValue - (indexModel.indexPercent.toDouble())
+                    tempValue -= (indexModel.indexPercent.toDouble())
                 }
             }
             indexWeekObserver.value = tempValue.toString()
         })
     }
 
+    // 查询历史数据
     fun getHistoryData(type: String, indexName: String) {
         mRepository.getAllIndexData(type, indexName, SimpleCallback { indexModels ->
             historyObserver.value = indexModels
+        })
+    }
+
+    // 查询最近一个月数据 涨幅情况
+    fun getLatelyMonth(type:String,indexName:String){
+        mRepository.getLatelyMonthRepository(type,indexName, SimpleCallback { indexModels ->
+            var tempValue : Double = 0.0
+
+            for (indexModel in indexModels){
+                if(indexModel.indexIncreaseType == 0){
+                    tempValue += (indexModel.indexPercent.toDouble())
+                }else{
+                    tempValue -= (indexModel.indexPercent.toDouble())
+                }
+            }
+            indexMouthObserver.value = tempValue.toString()
         })
     }
 }

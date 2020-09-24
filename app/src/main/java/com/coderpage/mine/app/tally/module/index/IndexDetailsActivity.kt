@@ -11,6 +11,7 @@ import com.coderpage.mine.R
 import com.coderpage.mine.app.tally.persistence.model.IndexModel
 import com.coderpage.mine.tally.module.index.IndexDetailsActivityBinding
 import com.coderpage.mine.ui.BaseActivity
+import kotlinx.android.synthetic.main.activity_index_details.*
 
 class IndexDetailsActivity : BaseActivity() {
 
@@ -47,8 +48,12 @@ class IndexDetailsActivity : BaseActivity() {
         })
 
         mViewModel?.indexWeekObserver?.observe(this, Observer {
-            mBinding?.indexWeek?.text = it+"%" +
+            mBinding?.indexWeek?.text = "$it%"
                     ""
+        })
+
+        mViewModel?.indexMouthObserver?.observe(this, Observer {
+            mBinding?.indexMouth?.text = "$it%"
         })
     }
 
@@ -68,6 +73,7 @@ class IndexDetailsActivity : BaseActivity() {
         super.onStart()
         mViewModel?.getLatelyWeek(mIndexModel!!.indexType, mIndexModel!!.indexName)
         mViewModel?.getHistoryData(mIndexModel!!.indexType, mIndexModel!!.indexName)
+        mViewModel?.getLatelyMonth(mIndexModel!!.indexType,mIndexModel!!.indexName)
     }
 }
 
