@@ -6,22 +6,19 @@ import com.coderpage.base.common.SimpleCallback
 import com.coderpage.concurrency.MineExecutors
 import com.coderpage.mine.app.tally.persistence.model.IndexModel
 import com.coderpage.mine.app.tally.persistence.sql.TallyDatabase
+import com.coderpage.mine.app.tally.utils.DateUtils
 
 /**
  * create by ths on 2020/9/18
  */
 class IndexDetailsRepository {
 
-    private val mDatabase: TallyDatabase
-
-    init {
-        mDatabase = TallyDatabase.getInstance()
-    }
+    private val mDatabase: TallyDatabase = TallyDatabase.getInstance()
 
     //查询近一周涨幅
     fun queryLatelyWeek(type: String, indexName: String, simpleCallback: SimpleCallback<List<IndexModel>>) {
         MineExecutors.ioExecutor().execute {
-            val indexModels = mDatabase.indexDao().getLatelyWeekIndex(type, indexName)
+            val indexModels = mDatabase.indexDao().getLatelyWeekIndex(type, indexName,DateUtils.getCurrentWeekOneDay(),DateUtils.getCurrentWeekLastDay())
 
             Log.i("IndexDetailsRepository","look at response json data = " + JSON.toJSONString(indexModels))
 
@@ -45,10 +42,71 @@ class IndexDetailsRepository {
     //查询最近一个月数据
     fun getLatelyMonthRepository(type:String,indexName:String,simpleCallback: SimpleCallback<List<IndexModel>>){
         MineExecutors.ioExecutor().execute {
-            var indexModels = mDatabase.indexDao().queryLatelyMonth(type,indexName)
+            var indexModels = mDatabase.indexDao().queryLatelyMonth(type,indexName,DateUtils.getCurrentMonthFirstDay(),DateUtils.getCurrentMonthLastDay())
             Log.i("IndexDetailsRepository","look at response json month data = " + JSON.toJSONString(indexModels))
-            if(indexModels != null && indexModels.size > 0){
+            if(indexModels != null &&
+                    indexModels.size > 0){
                 MineExecutors.executeOnUiThread{simpleCallback.success(indexModels)}
+            }
+        }
+    }
+
+    //查询最近几个月的数据
+    fun getUnKnowMonthRepository(type:String,indexName:String,simpleCallback: SimpleCallback<List<IndexModel>>) {
+        MineExecutors.ioExecutor().execute {
+            var indexModels = mDatabase.indexDao().queryLatelyMonth(type, indexName, DateUtils.getUnKnowMonthFirstDay(-3), System.currentTimeMillis())
+            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(indexModels))
+            if (indexModels != null &&
+                    indexModels.size > 0) {
+                MineExecutors.executeOnUiThread { simpleCallback.success(indexModels) }
+            }
+        }
+    }
+
+    // 查询最近半年的数据
+    fun getUnKnowHalfRepository(type:String,indexName:String,simpleCallback: SimpleCallback<List<IndexModel>>) {
+        MineExecutors.ioExecutor().execute {
+            var indexModels = mDatabase.indexDao().queryLatelyMonth(type, indexName, DateUtils.getUnKnowMonthFirstDay(-6), System.currentTimeMillis())
+            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(indexModels))
+            if (indexModels != null &&
+                    indexModels.size > 0) {
+                MineExecutors.executeOnUiThread { simpleCallback.success(indexModels) }
+            }
+        }
+    }
+
+    // 查询最近一年的数据
+    fun getUnKnowYearRepository(type:String,indexName:String,simpleCallback: SimpleCallback<List<IndexModel>>) {
+        MineExecutors.ioExecutor().execute {
+            var indexModels = mDatabase.indexDao().queryLatelyMonth(type, indexName, DateUtils.getUnKnowYearOneDay(-1), System.currentTimeMillis())
+            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(indexModels))
+            if (indexModels != null &&
+                    indexModels.size > 0) {
+                MineExecutors.executeOnUiThread { simpleCallback.success(indexModels) }
+            }
+        }
+    }
+
+    // 查询最近三年的数据
+    fun getThreeYearRepository(type:String,indexName:String,simpleCallback: SimpleCallback<List<IndexModel>>) {
+        MineExecutors.ioExecutor().execute {
+            var indexModels = mDatabase.indexDao().queryLatelyMonth(type, indexName, DateUtils.getUnKnowYearOneDay(-3), System.currentTimeMillis())
+            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(indexModels))
+            if (indexModels != null &&
+                    indexModels.size > 0) {
+                MineExecutors.executeOnUiThread { simpleCallback.success(indexModels) }
+            }
+        }
+    }
+
+    // 查询最近五年的数据
+    fun getFiveYearRepository(type:String,indexName:String,simpleCallback: SimpleCallback<List<IndexModel>>) {
+        MineExecutors.ioExecutor().execute {
+            var indexModels = mDatabase.indexDao().queryLatelyMonth(type, indexName, DateUtils.getUnKnowYearOneDay(-5), System.currentTimeMillis())
+            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(indexModels))
+            if (indexModels != null &&
+                    indexModels.size > 0) {
+                MineExecutors.executeOnUiThread { simpleCallback.success(indexModels) }
             }
         }
     }

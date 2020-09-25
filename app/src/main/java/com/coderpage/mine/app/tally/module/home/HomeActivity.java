@@ -68,7 +68,6 @@ public class HomeActivity extends BaseActivity {
 
         mPermissionReqHandler = new PermissionReqHandler(self());
 
-        DateUtils.getUnKnowYearOneDay(-1);
     }
 
     @Override

@@ -55,6 +55,30 @@ class IndexDetailsActivity : BaseActivity() {
         mViewModel?.indexMouthObserver?.observe(this, Observer {
             mBinding?.indexMouth?.text = "$it%"
         })
+
+        mViewModel?.indexThreeMouthObserver?.observe(this, Observer {
+            mBinding?.indexThreeMouth?.text = "$it%"
+        })
+
+        mViewModel?.indexHalfYearObserver?.observe(this, Observer {
+            mBinding?.indexHalfYear?.text = "$it%"
+        })
+
+        mViewModel?.indexYearObserver?.observe(this, Observer {
+            mBinding?.indexYear?.text = "$it%"
+        })
+
+        mViewModel?.indexThreeYearObserver?.observe(this, Observer {
+            mBinding?.indexThreeYear?.text = "$it%"
+        })
+
+        mViewModel?.indexFiveYearObserver?.observe(this, Observer {
+            mBinding?.indexFiveYear?.text = "$it%"
+        })
+
+        mViewModel?.indexStartObserver?.observe(this, Observer {
+            mBinding?.indexStart?.text = "$it%"
+        })
     }
 
     private fun getIntentData() {
@@ -74,6 +98,12 @@ class IndexDetailsActivity : BaseActivity() {
         mViewModel?.getLatelyWeek(mIndexModel!!.indexType, mIndexModel!!.indexName)
         mViewModel?.getHistoryData(mIndexModel!!.indexType, mIndexModel!!.indexName)
         mViewModel?.getLatelyMonth(mIndexModel!!.indexType,mIndexModel!!.indexName)
+        mViewModel?.getLatelyUnKnowMonth(mIndexModel!!.indexType,mIndexModel!!.indexName)
+        mViewModel?.getLatelyUnKnowYear(mIndexModel!!.indexType,mIndexModel!!.indexName)
+        mViewModel?.getLatelyOneYear(mIndexModel!!.indexType,mIndexModel!!.indexName)
+        mViewModel?.getLatelyThreeYear(mIndexModel!!.indexType,mIndexModel!!.indexName)
+        mViewModel?.getLatelyFiveYear(mIndexModel!!.indexType,mIndexModel!!.indexName)
+        mViewModel?.getLatelyStartData(mIndexModel!!.indexType,mIndexModel!!.indexName)
     }
 }
 

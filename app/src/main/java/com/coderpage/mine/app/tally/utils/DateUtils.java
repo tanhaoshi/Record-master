@@ -7,6 +7,7 @@ import android.util.Pair;
 import com.coderpage.base.utils.ResUtils;
 import com.coderpage.mine.R;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -257,6 +258,7 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, month);
+        Log.i("DateUtils","look at current day = " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime().getTime()));
         return calendar.getTime().getTime();
     }
 
@@ -269,5 +271,16 @@ public class DateUtils {
         cal.add(Calendar.YEAR,year);
         Log.i("DateUtils","look at current day = " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime().getTime()));
         return cal.getTime().getTime();
+    }
+
+    /**
+     * 将double类型数据转为字符串（如将18.4转为1840，如果需要1840.0，把int强转去掉即可）
+     * @param d
+     * @return
+     */
+    public static String double2String(double d){
+        BigDecimal bg = new BigDecimal(d);
+        double doubleValue = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+        return  String.valueOf(doubleValue);
     }
 }
