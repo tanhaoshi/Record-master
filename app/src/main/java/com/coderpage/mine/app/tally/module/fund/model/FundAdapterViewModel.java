@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LifecycleObserver;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.View;
 import com.coderpage.base.common.IError;
 import com.coderpage.base.common.Result;
 import com.coderpage.base.common.SimpleCallback;
+import com.coderpage.mine.app.tally.module.fund.FunDetailsActivity;
 import com.coderpage.mine.app.tally.module.fund.repository.FundRepository;
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
 import com.coderpage.mine.app.tally.ui.dialog.FundEditIndexDialog;
@@ -29,22 +32,10 @@ public class FundAdapterViewModel extends AndroidViewModel implements LifecycleO
     }
 
     public void onItemClick(View view, Activity activity, FundModel fundModel){
-        new FundEditIndexDialog(activity).setListener((dialog,percent,rangeType) -> {
-            FundModel model = new FundModel();
-            model.setFundName(fundModel.getFundName());
-            model.setFundNumber(fundModel.getFundNumber());
-            model.setTime(System.currentTimeMillis());
-            model.setFundType("1");
-            model.setFundPercent(percent);
-            model.setFundSyncId(System.currentTimeMillis());
-            model.setFundIncreaseType(Integer.valueOf(rangeType));
-            mRepository.saveFund(model, new SimpleCallback<Result<Long, IError>>() {
-                @Override
-                public void success(Result<Long, IError> longIErrorResult) {
-                    Log.i("FundAdapter","look at insert result = " + longIErrorResult.data());
-                }
-            });
-            dialog.dismiss();
-        }).show();
+        Intent intent = new Intent(activity, FunDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("fundModel",fundModel);
+        intent.putExtra("bundle",bundle);
+        activity.startActivity(intent);
     }
 }

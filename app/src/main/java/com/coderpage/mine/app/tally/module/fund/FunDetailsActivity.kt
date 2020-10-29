@@ -41,7 +41,7 @@ class FunDetailsActivity : BaseActivity() {
         if(bundle != null){
             mFundModel = bundle.getSerializable("fundModel") as FundModel
         }
-
+        
         if(mFundModel != null){
             setToolbarTitle(mFundModel!!.fundName)
         }
@@ -55,13 +55,12 @@ class FunDetailsActivity : BaseActivity() {
         fundDetailsAdapter = FundDetailsAdapter(this)
         recyclerView.adapter = fundDetailsAdapter
 
-        mViewModel?.fundhistoryObserver?.observe(this, Observer {
+        mViewModel?.fundHistoryObserver?.observe(this, Observer {
             fundDetailsAdapter!!.setData(it!!)
         })
 
         mViewModel?.fundWeekObserver?.observe(this, Observer {
             mBinding?.indexWeek?.text = "$it%"
-            ""
         })
 
         mViewModel?.fundMouthObserver?.observe(this, Observer {
@@ -95,5 +94,14 @@ class FunDetailsActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
+        mViewModel?.getAllFundData(mFundModel!!.fundType,mFundModel!!.fundName)
+        mViewModel?.getLatelyWeek(mFundModel!!.fundType,mFundModel!!.fundName)
+        mViewModel?.getLatelyMonth(mFundModel!!.fundType,mFundModel!!.fundName)
+        mViewModel?.getLatelyUnKnowMonth(mFundModel!!.fundType,mFundModel!!.fundName)
+        mViewModel?.getLatelyUnKnowYear(mFundModel!!.fundType,mFundModel!!.fundName)
+        mViewModel?.getLatelyOneYear(mFundModel!!.fundType,mFundModel!!.fundName)
+        mViewModel?.getLatelyThreeYear(mFundModel!!.fundType,mFundModel!!.fundName)
+        mViewModel?.getLatelyFiveYear(mFundModel!!.fundType,mFundModel!!.fundName)
+        mViewModel?.getLatelyStartData(mFundModel!!.fundType,mFundModel!!.fundName)
     }
 }

@@ -98,7 +98,6 @@ class FundDetailsAdapter() : RecyclerView.Adapter<FundDetailsAdapter.FundDetails
                 mBinding.etAmount.setTextColor(mActivity!!.resources.getColor(R.color.categoryIncomeColor4))
                 mBinding.etAmount.text = "-"+fundModel.fundPercent +"%"
             }
-
         }
     }
 }
