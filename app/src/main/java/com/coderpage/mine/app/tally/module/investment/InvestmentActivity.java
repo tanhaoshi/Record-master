@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ToastUtils;
+import com.coderpage.concurrency.MineExecutors;
 import com.coderpage.mine.R;
 import com.coderpage.mine.app.tally.common.router.TallyRouter;
 import com.coderpage.mine.app.tally.module.fund.FundEditActivity;
@@ -27,6 +28,9 @@ import com.coderpage.mine.app.tally.module.investment.model.InvestmentModel;
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
 import com.coderpage.mine.app.tally.persistence.model.IndexModel;
 import com.coderpage.mine.ui.BaseActivity;
+import com.coderpage.mine.utils.AndroidUtils;
+import com.coderpage.network.NetService;
+import com.coderpage.network.NetWorkUtils;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellValue;
@@ -34,14 +38,17 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 @Route(path = TallyRouter.INVESTMENT_PATH)
 public class InvestmentActivity extends BaseActivity {
@@ -186,38 +193,150 @@ public class InvestmentActivity extends BaseActivity {
             case R.id.edit_index:
                 startActivity(new Intent(this, IndexEditActivity.class));
                 break;
-            case R.id.edit_data:
+            case R.id.edit_fund_data:
                 readExcel("/storage/emulated/0/qpython/today_fund.xlsx");
+                break;
+            case R.id.edit_index_data:
+                readIndexData();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void readExcel(String fileName) {
-        try {
-            InputStream inputStream = new FileInputStream(fileName);
-            Workbook workbook;
-            if (fileName.endsWith(".xls")) {
-                workbook = new HSSFWorkbook(inputStream);
-            } else if (fileName.endsWith(".xlsx")) {
-                workbook = new XSSFWorkbook(inputStream);
-            } else {
-                ToastUtils.showShort("没找到数据!");
-                return;
+    private void readExcel(String fileName){
+        showProcessDialog("数据加载中!");
+        MineExecutors.ioExecutor().execute(() ->{
+            try {
+                InputStream inputStream = new FileInputStream(fileName);
+                Workbook workbook;
+                if (fileName.endsWith(".xls")) {
+                    workbook = new HSSFWorkbook(inputStream);
+                } else if (fileName.endsWith(".xlsx")) {
+                    workbook = new XSSFWorkbook(inputStream);
+                } else {
+                    ToastUtils.showShort("没找到数据!");
+                    return;
+                }
+                Sheet sheet = workbook.getSheetAt(0);
+                int rowsCount = sheet.getPhysicalNumberOfRows();
+                FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
+                for (int r = 1; r < rowsCount; r++) {
+                    Row row = sheet.getRow(r);
+                    CellValue v0 = formulaEvaluator.evaluate(row.getCell(0));
+                    CellValue v1 = formulaEvaluator.evaluate(row.getCell(1));
+                    CellValue v2 = formulaEvaluator.evaluate(row.getCell(2));
+                    CellValue v3 = formulaEvaluator.evaluate(row.getCell(3));
+                    CellValue v4 = formulaEvaluator.evaluate(row.getCell(4));
+                    CellValue v5 = formulaEvaluator.evaluate(row.getCell(5));
+                    CellValue v6 = formulaEvaluator.evaluate(row.getCell(6));
+                    CellValue v7 = formulaEvaluator.evaluate(row.getCell(7));
+                    CellValue v8 = formulaEvaluator.evaluate(row.getCell(8));
+
+                    FundModel fundModel = new FundModel();
+                    fundModel.setFundName(v1.getStringValue());
+                    fundModel.setFundNumber(v0.getStringValue());
+                    // 插入数据时 当天 数据不一定就能全部更新, 所以我们将更新数据动作 放到了第二天进行
+                    // 第二天的任意时刻,都在这个基础上 定位为昨天的今天这个时间,比如我们今天9点钟左右导入数据，
+                    // 实际上是昨天一天的数据
+                    fundModel.setTime(System.currentTimeMillis() - 86400000);
+                    fundModel.setFundType("1");
+                    fundModel.setFundPercent(v5 == null ? "" : v5.getStringValue());
+                    fundModel.setFundSyncId(System.currentTimeMillis());
+                    fundModel.setFundIncreaseType(v5 == null ? 0 : Double.valueOf(v5.getStringValue()) > 0 ? 0 : 1);
+                    fundModel.setFundYesterdayWorth(v2 == null ? "" : v2.getStringValue());
+                    fundModel.setFundTodayWorth(v3 == null ? "" : v3.getStringValue());
+                    fundModel.setFundNetProfit(v4 == null ? "" : v4.getStringValue());
+                    fundModel.setFundApplyStatus(v6 == null ? "" : v6.getStringValue());
+                    fundModel.setFundRedeemStatus(v7 == null ? "" : v7.getStringValue());
+                    fundModel.setFundServiceCharge(v8 == null ? "" : v8.getStringValue());
+
+                    mFundViewModel.insertFundData(fundModel);
+                }
+                workbook.close();
+                MineExecutors.executeOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFundViewModel.updateFund();
+                        dismissProcessDialog();
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            Sheet sheet = workbook.getSheetAt(0);
-            int rowsCount = sheet.getPhysicalNumberOfRows();
-            FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
-            for (int r = 0; r < rowsCount; r++) {
-                Row row = sheet.getRow(r);
-                CellValue v0 = formulaEvaluator.evaluate(row.getCell(0));
-                CellValue v1 = formulaEvaluator.evaluate(row.getCell(1));
-                Log.i("Excel", "readExcel: " + v0.getStringValue() + "," + v1.getStringValue());
-            }
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
+    }
+
+    String[] ind = {"股票名称","今日收盘指数","指数涨幅","涨幅百分比","成交多少手","成交金额"};
+
+    private void readIndexData(){
+        httpClientForHtml("http://hq.sinajs.cn/list=s_sh000001");//你要访问的股票
+        httpClientForHtml("http://hq.sinajs.cn/list=s_sz399001");//你要访问的股票
+        httpClientForHtml("http://hq.sinajs.cn/list=s_sz399006");
+        //http://hq.sinajs.cn/list=s_sz399001
+        //http://hq.sinajs.cn/list=s_sh000001
+        //http://hq.sinajs.cn/list=s_sz399006
+
+    }
+
+    private String httpClientForHtml(String ssUrl){
+        NetWorkUtils.getInstance().createService(NetService.class)
+                .getIndexList(ssUrl)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new io.reactivex.Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        try{
+                            String content = responseBody.string();
+                            String[] fcs = content.split("\"");          //按"号分割字符
+                            String scs = fcs[1];
+                            StringBuffer sb = new StringBuffer(scs);
+                            sb.insert(scs.length(),",0");
+                            String[] tcs = sb.toString().split(",");          //按,号分割字符
+                            for(int i=0;i<tcs.length-1;i++){
+                                Log.i("InvestmentActivity",ind[i] + "： " + tcs[i]);
+                            }
+
+                            IndexModel indexModel = new IndexModel();
+                            indexModel.setFundSyncId(System.currentTimeMillis());
+                            indexModel.setIndexName(tcs[0]);
+                            indexModel.setIndexType("1");
+                            indexModel.setIndexNumber(String.valueOf(AndroidUtils.formatDouble2(Double.valueOf(tcs[1]))));
+                            indexModel.setIndexRange(String.valueOf(AndroidUtils.formatDouble2(Double.valueOf(tcs[2]))));
+                            indexModel.setIndexPercent(tcs[3]);
+                            indexModel.setIndexIncreaseType(Double.valueOf(tcs[2]) > 0 ? 0 : 1);
+                            indexModel.setIndexYesNumber(String.valueOf(AndroidUtils.formatDouble2(Double.valueOf(tcs[1]) - Double.valueOf(tcs[2]))));
+                            indexModel.setIndexDealNumber(tcs[4]);
+                            indexModel.setIndexDealAmount(tcs[5]);
+
+                            mInvestmentModel.insertIndexData(indexModel);
+
+                            if(tcs[0].equals("创业板指")){
+                                mInvestmentModel.updateIndex();
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("InvestmentActivity","error message = " + e.getMessage().toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+       return "";
     }
 }
 

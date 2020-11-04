@@ -75,4 +75,9 @@ public class FundViewModel extends AndroidViewModel implements LifecycleObserver
         }).show();
     }
 
+
+    public void deleteAllOfModel(){
+        mRepository.deleteAllOfRepository();
+        initData();
+    }
 }

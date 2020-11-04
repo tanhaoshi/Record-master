@@ -10,6 +10,8 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.coderpage.base.common.Callback;
 import com.coderpage.base.common.IError;
+import com.coderpage.base.common.Result;
+import com.coderpage.base.common.SimpleCallback;
 import com.coderpage.mine.app.tally.module.investment.repository.InvestmentRepository;
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
 import com.coderpage.mine.app.tally.persistence.model.IndexModel;
@@ -72,5 +74,18 @@ public class InvestmentModel extends AndroidViewModel implements LifecycleObserv
                 Log.i("InvestmentModel","look at error message = " + iError.msg());
             }
         });
+    }
+
+    public void insertIndexData(IndexModel indexModel){
+        mRepository.saveIndex(indexModel, new SimpleCallback<Result<Long, IError>>() {
+            @Override
+            public void success(Result<Long, IError> longIErrorResult) {
+
+            }
+        });
+    }
+
+    public void updateIndex(){
+        queryInsideIndex("1");
     }
 }

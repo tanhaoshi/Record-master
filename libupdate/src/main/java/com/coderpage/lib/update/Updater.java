@@ -45,58 +45,7 @@ public class Updater {
     }
 
     public void checkNewVersion(Context context, NewVersionCheckCallBack callBack) {
-        callBack.onCheckStart();
-        Context appContext = context.getApplicationContext();
-        Dialog progressDialogTemp = null;
-        if (showCheckProgressDialog) {
-            progressDialogTemp = showCheckProgressDialog(
-                    context, R.string.libupdate_alert_on_checking_new_version);
-        }
-        final Dialog progressDialog = progressDialogTemp;
-        AsyncTask<Void, Void, Result<ApkModel, Error>> checkAsyncTask
-                = new AsyncTask<Void, Void, Result<ApkModel, Error>>() {
-            @Override
-            protected Result<ApkModel, Error> doInBackground(Void... params) {
-                return sourceFetcher.fetchApkModel();
-            }
 
-            @Override
-            protected void onPostExecute(Result<ApkModel, Error> result) {
-                dismissDialog(progressDialog);
-                if (result.isOk()) {
-                    PreferenceUtils.refreshNewVersionApkInfo(appContext, result.data());
-                    callBack.onCheckFinish(result.data());
-                    boolean foundNewVersion = versionComparator.compare(appContext, result.data());
-                    if (foundNewVersion) {
-                        callBack.onFindNewVersion(result.data());
-                    } else {
-                        callBack.onAlreadyNewestVersion(result.data());
-                    }
-                    if (foundNewVersion && showApkDownloadConfirmDialog) {
-                        showApkDownloadConfirmDialogForce(context, result.data());
-                    }
-                    if (!foundNewVersion && showCheckResultToast) {
-                        Toast.makeText(appContext,
-                                R.string.libupdate_toast_already_latest_version,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    if (showCheckResultToast) {
-                        String tipMsg = appContext.getString(
-                                R.string.libupdate_toast_http_error,
-                                String.valueOf(result.error().code()),
-                                result.error().message());
-                        Toast.makeText(appContext, tipMsg, Toast.LENGTH_SHORT).show();
-                    }
-                    callBack.onCheckFail(result.error());
-                }
-            }
-        };
-        if (executor != null) {
-            checkAsyncTask.executeOnExecutor(executor);
-        } else {
-            checkAsyncTask.execute();
-        }
     }
 
 

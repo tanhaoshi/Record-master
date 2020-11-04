@@ -15,6 +15,7 @@ import com.coderpage.base.common.SimpleCallback;
 import com.coderpage.base.utils.UIUtils;
 import com.coderpage.mine.app.tally.module.investment.repository.InvestmentRepository;
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
+import com.coderpage.mine.app.tally.persistence.model.IndexModel;
 import com.coderpage.mine.app.tally.ui.dialog.FundEditIndexDialog;
 
 /**
@@ -51,4 +52,18 @@ public class IndexFundViewModel extends AndroidViewModel implements LifecycleObs
             dialog.dismiss();
         }).show();
     }
+
+    public void insertFundData(FundModel fundModel){
+        mRepository.saveFund(fundModel, new SimpleCallback<Result<Long, IError>>() {
+            @Override
+            public void success(Result<Long, IError> longIErrorResult) {
+//                observerUpdate.setValue(true);
+            }
+        });
+    }
+
+    public void updateFund(){
+        observerUpdate.setValue(true);
+    }
+
 }

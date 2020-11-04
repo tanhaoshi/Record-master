@@ -26,7 +26,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="92dp"
         android:onClick="@{(v) -> vm.onItemClick(v,activity,data)}"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="12dp"
@@ -49,6 +49,17 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="购物" />
+
+        <!-- 时间 -->
+        <TextView
+            android:id="@+id/dateTime"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            app:layout_constraintTop_toBottomOf="@+id/tvCategoryName"
+            android:layout_marginTop="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="2020年 10月29日"/>
         <!-- 金额 -->
         <TextView
             android:id="@+id/etAmount"

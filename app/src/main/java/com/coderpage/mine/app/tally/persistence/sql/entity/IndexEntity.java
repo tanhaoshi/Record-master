@@ -52,6 +52,18 @@ public class IndexEntity {
     @ColumnInfo(name = "index_increase_type")
     private int indexIncreaseType;
 
+    // 昨日收盘指数
+    @ColumnInfo(name = "index_yesterday_number")
+    private String indexYesNumber;
+
+    // 成交多少手
+    @ColumnInfo(name = "index_deal_number")
+    private String indexDealNumber;
+
+    //成交金额
+    @ColumnInfo(name = "index_deal_amount")
+    private String indexDealAmount;
+
     public long getId() {
         return id;
     }
@@ -130,5 +142,29 @@ public class IndexEntity {
 
     public void setIndexIncreaseType(int indexIncreaseType) {
         this.indexIncreaseType = indexIncreaseType;
+    }
+
+    public String getIndexYesNumber() {
+        return indexYesNumber;
+    }
+
+    public void setIndexYesNumber(String indexYesNumber) {
+        this.indexYesNumber = indexYesNumber;
+    }
+
+    public String getIndexDealNumber() {
+        return indexDealNumber;
+    }
+
+    public void setIndexDealNumber(String indexDealNumber) {
+        this.indexDealNumber = indexDealNumber;
+    }
+
+    public String getIndexDealAmount() {
+        return indexDealAmount;
+    }
+
+    public void setIndexDealAmount(String indexDealAmount) {
+        this.indexDealAmount = indexDealAmount;
     }
 }

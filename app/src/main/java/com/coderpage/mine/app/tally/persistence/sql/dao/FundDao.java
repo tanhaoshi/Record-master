@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
 import com.coderpage.mine.app.tally.persistence.model.IndexModel;
 import com.coderpage.mine.app.tally.persistence.sql.entity.FundEntity;
+import com.coderpage.mine.app.tally.persistence.sql.entity.IndexEntity;
 
 import java.util.List;
 
@@ -28,8 +29,12 @@ public interface FundDao {
     @Insert
     long insert(FundEntity fundEntity);
 
+    @Insert
+    long insert(IndexEntity indexEntity);
+
     @Query("select * from fund group by fund_name order by create_time desc")
     List<FundModel> getAllFund();
 
-
+    @Query("DELETE FROM FUND")
+    void deleteAll();
 }

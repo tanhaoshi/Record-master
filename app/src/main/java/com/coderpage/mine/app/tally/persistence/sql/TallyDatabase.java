@@ -32,7 +32,7 @@ import java.util.List;
  * @since 0.6.0
  */
 
-@Database(entities = {RecordEntity.class,CategoryEntity.class,FundEntity.class, IndexEntity.class}, version = 72, exportSchema = false)
+@Database(entities = {RecordEntity.class,CategoryEntity.class,FundEntity.class, IndexEntity.class}, version = 74, exportSchema = false)
 public abstract class TallyDatabase extends RoomDatabase {
     /** sqlite db name */
     private static final String DATABASE_NAME = "sql_tally";
@@ -49,6 +49,10 @@ public abstract class TallyDatabase extends RoomDatabase {
     private static final int VERSION_0_7_1 = 71;
 
     private static final int VERSION_0_7_2 = 72;
+
+    private static final int VERSION_0_7_3 = 73;
+
+    private static final int VERSION_0_7_4 = 74;
 
     private static TallyDatabase sInstance = null;
 
@@ -89,7 +93,7 @@ public abstract class TallyDatabase extends RoomDatabase {
                             MineApp.getAppContext(),
                             TallyDatabase.class, DATABASE_NAME)
                             .addMigrations(MIGRATION_010_040, MIGRATION_040_060,MIGRATION_060_070,
-                                    MIGRATION_070_071,MIGRATION_071_072)
+                                    MIGRATION_070_071,MIGRATION_071_072,MIGRATION_072_073,MIGRATION_073_074)
                             .addCallback(mTallDatabaseCallback)
                             .allowMainThreadQueries()
                             .build();
@@ -333,6 +337,27 @@ public abstract class TallyDatabase extends RoomDatabase {
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE indexs add column index_increase_type INTEGER NOT NULL DEFAULT 0 ");
             database.execSQL("ALTER TABLE fund add column fund_increase_type INTEGER NOT NULL DEFAULT 0");
+        }
+    };
+
+    private static final Migration MIGRATION_072_073 = new Migration(VERSION_0_7_2,VERSION_0_7_3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE fund add column fund_today_worth TEXT");
+            database.execSQL("ALTER TABLE fund add column fund_yesterday_worth TEXT");
+            database.execSQL("ALTER TABLE fund add column fund_net_profit TEXT");
+            database.execSQL("ALTER TABLE fund add column fund_apply_status TEXT");
+            database.execSQL("ALTER TABLE fund add column fund_redeem_status TEXT");
+            database.execSQL("ALTER TABLE fund add column fund_service_charge TEXT");
+        }
+    };
+
+    private static final Migration MIGRATION_073_074 = new Migration(VERSION_0_7_3,VERSION_0_7_4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE indexs add column index_yesterday_number TEXT");
+            database.execSQL("ALTER TABLE indexs add column index_deal_number TEXT");
+            database.execSQL("ALTER TABLE indexs add column index_deal_amount TEXT");
         }
     };
 

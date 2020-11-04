@@ -28,11 +28,7 @@ public class FundRepository {
     public void queryAllFun(Callback<List<FundModel>, IError> callback){
         MineExecutors.ioExecutor().execute(() ->{
             List<FundModel> fundModels = mDataBase.fundDisposeDao().getAllFund();
-
-            if(null != fundModels && fundModels.size() > 0){
-                Log.i("FundRepository","look at database data = " + JSON.toJSONString(fundModels));
-                callback.success(fundModels);
-            }
+            callback.success(fundModels);
         });
     }
 
@@ -41,5 +37,9 @@ public class FundRepository {
             long id = mDataBase.fundDisposeDao().insert(fundModel.createEntity());
             MineExecutors.executeOnUiThread(() ->callback.success(new Result<>(id,null)));
         });
+    }
+
+    public void deleteAllOfRepository(){
+        mDataBase.fundDisposeDao().deleteAll();
     }
 }

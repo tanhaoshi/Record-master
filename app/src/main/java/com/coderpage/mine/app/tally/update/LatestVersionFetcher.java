@@ -41,51 +41,52 @@ class LatestVersionFetcher implements SourceFetcher {
     @Override
     public Result<ApkModel, Error> fetchApkModel() {
 
-        Result<ApkModel, Error> result = new Result<>();
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor((message) -> {
-                LogUtils.LOGI(TAG, message);
-            });
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(loggingInterceptor)
-                    .addInterceptor(new RequestInterceptor())
-                    .build();
-        }
-
-        Retrofit apiRetrofit = new Retrofit.Builder()
-                .baseUrl(VERSION_BASE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(FastJsonConverterFactory.create())
-                .build();
-        UpdateApi api = apiRetrofit.create(UpdateApi.class);
-
-        // 获取最新版本信息
-        try {
-            JSONObject reqBody = new JSONObject();
-            reqBody.put("packageName", MineApp.getAppContext().getPackageName());
-            reqBody.put("channelName", BuildConfig.FLAVOR);
-            Response<LatestVersionResponse> response = api
-                    .fetchLatestVersion(reqBody)
-                    .execute();
-            if (!response.isSuccessful()) {
-                result.setErr(new Error(response.code(), response.message()));
-                return result;
-            }
-            LatestVersionResponse body = response.body();
-            if (body.getStatus() != 200) {
-                result.setErr(new Error(body.getStatus(), body.getMessage()));
-                return result;
-            }
-            result.setData(body.getLatestVersion());
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setErr(new Error(ErrorCode.UNKNOWN, e.getMessage()));
-            return result;
-        }
+//        Result<ApkModel, Error> result = new Result<>();
+//
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//        if (BuildConfig.DEBUG) {
+//            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor((message) -> {
+//                LogUtils.LOGI(TAG, message);
+//            });
+//            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//            okHttpClient = new OkHttpClient.Builder()
+//                    .addInterceptor(loggingInterceptor)
+//                    .addInterceptor(new RequestInterceptor())
+//                    .build();
+//        }
+//
+//        Retrofit apiRetrofit = new Retrofit.Builder()
+//                .baseUrl(VERSION_BASE_URL)
+//                .client(okHttpClient)
+//                .addConverterFactory(FastJsonConverterFactory.create())
+//                .build();
+//        UpdateApi api = apiRetrofit.create(UpdateApi.class);
+//
+//        // 获取最新版本信息
+//        try {
+//            JSONObject reqBody = new JSONObject();
+//            reqBody.put("packageName", MineApp.getAppContext().getPackageName());
+//            reqBody.put("channelName", BuildConfig.FLAVOR);
+//            Response<LatestVersionResponse> response = api
+//                    .fetchLatestVersion(reqBody)
+//                    .execute();
+//            if (!response.isSuccessful()) {
+//                result.setErr(new Error(response.code(), response.message()));
+//                return result;
+//            }
+//            LatestVersionResponse body = response.body();
+//            if (body.getStatus() != 200) {
+//                result.setErr(new Error(body.getStatus(), body.getMessage()));
+//                return result;
+//            }
+//            result.setData(body.getLatestVersion());
+//            return result;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            result.setErr(new Error(ErrorCode.UNKNOWN, e.getMessage()));
+//            return result;
+//        }
+        return null;
     }
 
     interface UpdateApi {

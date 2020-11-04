@@ -6,14 +6,14 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.blankj.utilcode.util.TimeUtils
 
 import com.coderpage.mine.MineApp
 import com.coderpage.mine.R
 import com.coderpage.mine.app.tally.module.investment.model.IndexFundViewModel
 import com.coderpage.mine.app.tally.persistence.model.FundModel
 import com.coderpage.mine.tally.module.fund.AdapterIndexOfBinding
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * create by ths on 2020/9/16
@@ -77,7 +77,7 @@ class IndexOfFundAdapter(private val mActivity: Activity, private val mFundViewM
         return mFundModels.size
     }
 
-    public inner class FundVH(var mBinding: AdapterIndexOfBinding) : RecyclerView.ViewHolder(mBinding.root) {
+    inner class FundVH(var mBinding: AdapterIndexOfBinding) : RecyclerView.ViewHolder(mBinding.root) {
 
         fun bindTo(fundModel: FundModel) {
             mBinding.activity = mActivity
@@ -88,11 +88,12 @@ class IndexOfFundAdapter(private val mActivity: Activity, private val mFundViewM
             if (fundModel.fundIncreaseType == 0) {
                 mBinding.etAmount.text = "+" + fundModel.fundPercent + "%"
                 mBinding.etAmount.setTextColor(mActivity.resources.getColor(R.color.indexRangeUp))
-
             } else {
-                mBinding.etAmount.text = "-" + fundModel.fundPercent + "%"
+                mBinding.etAmount.text = fundModel.fundPercent + "%"
                 mBinding.etAmount.setTextColor(mActivity.resources.getColor(R.color.categoryIncomeColor4))
             }
+
+            mBinding.dateTime.text = TimeUtils.date2String(Date(fundModel.time),"yyyy-MM-dd : HH:mm:ss")
         }
     }
 }

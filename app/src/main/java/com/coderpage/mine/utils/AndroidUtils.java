@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -54,4 +55,10 @@ public class AndroidUtils {
         context.startActivity(intent);
     }
 
+
+    public static double formatDouble2(double d) {
+        BigDecimal bigDecimal = new BigDecimal(d);
+        double bg = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return bg;
+    }
 }

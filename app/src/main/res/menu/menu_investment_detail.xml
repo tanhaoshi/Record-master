@@ -15,8 +15,14 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/edit_data"
-        android:title="编辑数据"
+        android:id="@+id/edit_fund_data"
+        android:title="导入基金数据"
+        android:visible="true"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/edit_index_data"
+        android:title="导入指数数据"
         android:visible="true"
         app:showAsAction="never"/>
 

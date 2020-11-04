@@ -80,23 +80,24 @@ class FundDetailsAdapter() : RecyclerView.Adapter<FundDetailsAdapter.FundDetails
         adapterFDViewModel = AdapterFDViewModel(MineApp.getAppContext())
     }
 
-    public inner class FundDetailsViewHolder(var mBinding:AdapterFundDetailsBinding) : RecyclerView.ViewHolder(mBinding.root){
+    inner class FundDetailsViewHolder(var mBinding:AdapterFundDetailsBinding) : RecyclerView.ViewHolder(mBinding.root){
 
-        public fun binTo(fundModel: FundModel){
+         fun binTo(fundModel: FundModel){
             mBinding.data = fundModel
             mBinding.vm   = adapterFDViewModel
             mBinding.activity = mActivity
             mBinding.executePendingBindings()
 
             mBinding.tvCategoryName.text = fundModel.fundName
-            mBinding.tvTime.text = TimeUtils.millis2String(fundModel.time,"yyyy-MM-dd")
+
+            mBinding.dateTime.text = TimeUtils.millis2String(fundModel.time,"yyyy-MM-dd")
 
             if(fundModel.fundIncreaseType == 0){
                 mBinding.etAmount.setTextColor(mActivity!!.resources.getColor(R.color.indexRangeUp))
                 mBinding.etAmount.text = "+"+fundModel.fundPercent +"%"
             }else{
                 mBinding.etAmount.setTextColor(mActivity!!.resources.getColor(R.color.categoryIncomeColor4))
-                mBinding.etAmount.text = "-"+fundModel.fundPercent +"%"
+                mBinding.etAmount.text = fundModel.fundPercent +"%"
             }
         }
     }

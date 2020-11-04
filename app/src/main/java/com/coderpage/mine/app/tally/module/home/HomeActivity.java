@@ -73,7 +73,6 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        UpdateUtils.checkPersistedNewVersionAndShowUpdateConfirmDialog(this);
         handlePermission();
     }
 
