@@ -2,7 +2,7 @@ package com.coderpage.mine.app.tally.module.investment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,8 +17,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.coderpage.concurrency.MineExecutors;
 import com.coderpage.mine.R;
 import com.coderpage.mine.app.tally.common.router.TallyRouter;
-import com.coderpage.mine.app.tally.module.fund.FundEditActivity;
-import com.coderpage.mine.app.tally.module.index.IndexEditActivity;
 import com.coderpage.mine.app.tally.module.investment.adapter.IndexHKAdapter;
 import com.coderpage.mine.app.tally.module.investment.adapter.IndexInsideAdapter;
 import com.coderpage.mine.app.tally.module.investment.adapter.IndexOfFundAdapter;
@@ -27,6 +25,7 @@ import com.coderpage.mine.app.tally.module.investment.model.IndexFundViewModel;
 import com.coderpage.mine.app.tally.module.investment.model.InvestmentModel;
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
 import com.coderpage.mine.app.tally.persistence.model.IndexModel;
+import com.coderpage.mine.app.tally.ui.dialog.PermissionReqDialog;
 import com.coderpage.mine.ui.BaseActivity;
 import com.coderpage.mine.utils.AndroidUtils;
 import com.coderpage.network.NetService;
@@ -59,7 +58,7 @@ public class InvestmentActivity extends BaseActivity {
     /** 国外指数 */
     public static final String OUTSIZE_TYPE = "2";
 
-    /** 香港指数 */
+    /**  外围指数  */
     public static final String HK_TYPE      = "3";
 
     private InvestmentModel           mInvestmentModel;
@@ -167,7 +166,7 @@ public class InvestmentActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-       observerStartInitData();
+        observerStartInitData();
     }
 
     private void observerStartInitData(){
@@ -187,20 +186,55 @@ public class InvestmentActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.details:
-                startActivity(new Intent(this, FundEditActivity.class));
-                break;
-            case R.id.edit_index:
-                startActivity(new Intent(this, IndexEditActivity.class));
-                break;
             case R.id.edit_fund_data:
-                readExcel("/storage/emulated/0/qpython/today_fund.xlsx");
+                editFundDataDialog();
                 break;
             case R.id.edit_index_data:
-                readIndexData();
+                editIndexDataDialog();
+                break;
+            case R.id.edit_index_delete:
+                mInvestmentModel.deleteIndex();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editFundDataDialog(){
+        new PermissionReqDialog(this,"是否确定导入基金数据","请确认导入是否有重复的数据")
+                .setTitleText("温馨提示!")
+                .setPositiveText("确认")
+                .setListener(new PermissionReqDialog.Listener() {
+                    @Override
+                    public void onCancelClick(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onConfirmClick(DialogInterface dialog) {
+                        readExcel("/storage/emulated/0/qpython/today_fund.xlsx");
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    private void editIndexDataDialog(){
+        new PermissionReqDialog(this,"是否确定导入指数数据","请确认导入是否有重复的数据")
+                .setTitleText("温馨提示!")
+                .setPositiveText("确认")
+                .setListener(new PermissionReqDialog.Listener() {
+                    @Override
+                    public void onCancelClick(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onConfirmClick(DialogInterface dialog) {
+                        readIndexData();
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void readExcel(String fileName){
@@ -266,19 +300,33 @@ public class InvestmentActivity extends BaseActivity {
         });
     }
 
-    String[] ind = {"股票名称","今日收盘指数","指数涨幅","涨幅百分比","成交多少手","成交金额"};
+    private volatile int count = 0;
+
+//    String[] ind = {"股票名称","今日收盘指数","指数涨幅","涨幅百分比","成交多少手","成交金额"};
 
     private void readIndexData(){
-        httpClientForHtml("http://hq.sinajs.cn/list=s_sh000001");//你要访问的股票
-        httpClientForHtml("http://hq.sinajs.cn/list=s_sz399001");//你要访问的股票
-        httpClientForHtml("http://hq.sinajs.cn/list=s_sz399006");
-        //http://hq.sinajs.cn/list=s_sz399001
-        //http://hq.sinajs.cn/list=s_sh000001
-        //http://hq.sinajs.cn/list=s_sz399006
-
+        showProcessDialog("数据加载中!");
+        //上证
+        httpClientForInside("http://hq.sinajs.cn/list=s_sh000001");//你要访问的股票
+        //深证成指
+        httpClientForInside("http://hq.sinajs.cn/list=s_sz399001");//你要访问的股票
+        //创业板指
+        httpClientForInside("http://hq.sinajs.cn/list=s_sz399006");
+        //道琼斯指
+        httpClientForOutside("http://hq.sinajs.cn/list=int_dji");
+        //纳斯达克指数
+        httpClientForOutside("http://hq.sinajs.cn/list=int_nasdaq");
+        //恒生指数
+        httpClientForOutside("http://hq.sinajs.cn/list=int_hangseng");
+        //沪深300
+        httpClientForHK("http://hq.sinajs.cn/list=s_sh000300");
+        //中证500
+        httpClientForHK("http://hq.sinajs.cn/list=s_sh000905");
+        //科创50
+        httpClientForHK("http://hq.sinajs.cn/list=s_sh000688");
     }
 
-    private String httpClientForHtml(String ssUrl){
+    private String httpClientForInside(String ssUrl){
         NetWorkUtils.getInstance().createService(NetService.class)
                 .getIndexList(ssUrl)
                 .subscribeOn(Schedulers.io())
@@ -299,26 +347,28 @@ public class InvestmentActivity extends BaseActivity {
                             StringBuffer sb = new StringBuffer(scs);
                             sb.insert(scs.length(),",0");
                             String[] tcs = sb.toString().split(",");          //按,号分割字符
-                            for(int i=0;i<tcs.length-1;i++){
-                                Log.i("InvestmentActivity",ind[i] + "： " + tcs[i]);
-                            }
 
                             IndexModel indexModel = new IndexModel();
                             indexModel.setFundSyncId(System.currentTimeMillis());
                             indexModel.setIndexName(tcs[0]);
-                            indexModel.setIndexType("1");
-                            indexModel.setIndexNumber(String.valueOf(AndroidUtils.formatDouble2(Double.valueOf(tcs[1]))));
-                            indexModel.setIndexRange(String.valueOf(AndroidUtils.formatDouble2(Double.valueOf(tcs[2]))));
+                            indexModel.setIndexType(INSIDE_TYPE);
+                            indexModel.setIndexNumber(AndroidUtils.formatDouble2(Double.valueOf(tcs[1])));
+                            indexModel.setIndexRange(AndroidUtils.formatDouble2(Double.valueOf(tcs[2])));
                             indexModel.setIndexPercent(tcs[3]);
                             indexModel.setIndexIncreaseType(Double.valueOf(tcs[2]) > 0 ? 0 : 1);
-                            indexModel.setIndexYesNumber(String.valueOf(AndroidUtils.formatDouble2(Double.valueOf(tcs[1]) - Double.valueOf(tcs[2]))));
+                            indexModel.setIndexYesNumber(AndroidUtils.formatDouble2(Double.valueOf(tcs[1]) - Double.valueOf(tcs[2])));
                             indexModel.setIndexDealNumber(tcs[4]);
                             indexModel.setIndexDealAmount(tcs[5]);
 
                             mInvestmentModel.insertIndexData(indexModel);
 
-                            if(tcs[0].equals("创业板指")){
-                                mInvestmentModel.updateIndex();
+                            count = count + 1;
+
+                            if(count == 9){
+                                mInvestmentModel.queryInsideIndex(INSIDE_TYPE);
+                                mInvestmentModel.queryOutsize(OUTSIZE_TYPE);
+                                mInvestmentModel.queryHKInside(HK_TYPE);
+                                dismissProcessDialog();
                             }
 
                         }catch (Exception e){
@@ -337,6 +387,129 @@ public class InvestmentActivity extends BaseActivity {
                     }
                 });
        return "";
+    }
+
+    private String httpClientForOutside(String url){
+        NetWorkUtils.getInstance().createService(NetService.class)
+                .getIndexList(url)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new io.reactivex.Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        try{
+                            String content = responseBody.string();
+                            String[] fcs = content.split("\"");          //按"号分割字符
+                            String scs = fcs[1];
+                            StringBuffer sb = new StringBuffer(scs);
+                            sb.insert(scs.length(),",0");
+                            String[] tcs = sb.toString().split(",");          //按,号分割字符
+
+                            IndexModel indexModel = new IndexModel();
+                            indexModel.setFundSyncId(System.currentTimeMillis());
+                            indexModel.setIndexName(tcs[0]);
+                            indexModel.setIndexType(OUTSIZE_TYPE);
+                            indexModel.setIndexNumber(AndroidUtils.formatDouble2(Double.valueOf(tcs[1])));
+                            indexModel.setIndexRange(AndroidUtils.formatDouble2(Double.valueOf(tcs[2])));
+                            indexModel.setIndexPercent(tcs[3].replace("%",""));
+                            indexModel.setIndexIncreaseType(Double.valueOf(tcs[2]) > 0 ? 0 : 1);
+                            indexModel.setIndexYesNumber(AndroidUtils.formatDouble2(Double.valueOf(tcs[1]) - Double.valueOf(tcs[2])));
+
+                            mInvestmentModel.insertIndexData(indexModel);
+
+                            count = count + 1;
+
+                            if(count == 9){
+                                mInvestmentModel.queryInsideIndex(INSIDE_TYPE);
+                                mInvestmentModel.queryOutsize(OUTSIZE_TYPE);
+                                mInvestmentModel.queryHKInside(HK_TYPE);
+                                dismissProcessDialog();
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("InvestmentActivity","error message = " + e.getMessage().toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        return "";
+    }
+
+    public String httpClientForHK(String url){
+        NetWorkUtils.getInstance().createService(NetService.class)
+                .getIndexList(url)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new io.reactivex.Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        try{
+                            String content = responseBody.string();
+                            String[] fcs = content.split("\"");          //按"号分割字符
+                            String scs = fcs[1];
+                            StringBuffer sb = new StringBuffer(scs);
+                            sb.insert(scs.length(),",0");
+                            String[] tcs = sb.toString().split(",");          //按,号分割字符
+
+                            IndexModel indexModel = new IndexModel();
+                            indexModel.setFundSyncId(System.currentTimeMillis());
+                            indexModel.setIndexName(tcs[0]);
+                            indexModel.setIndexType(HK_TYPE);
+                            indexModel.setIndexNumber(AndroidUtils.formatDouble2(Double.valueOf(tcs[1])));
+                            indexModel.setIndexRange(AndroidUtils.formatDouble2(Double.valueOf(tcs[2])));
+                            indexModel.setIndexPercent(tcs[3]);
+                            indexModel.setIndexIncreaseType(Double.valueOf(tcs[2]) > 0 ? 0 : 1);
+                            indexModel.setIndexYesNumber(AndroidUtils.formatDouble2(Double.valueOf(tcs[1]) - Double.valueOf(tcs[2])));
+                            indexModel.setIndexDealNumber(tcs[4]);
+                            indexModel.setIndexDealAmount(tcs[5]);
+
+                            mInvestmentModel.insertIndexData(indexModel);
+
+                            count = count + 1;
+
+                            if(count == 9){
+                                mInvestmentModel.queryInsideIndex(INSIDE_TYPE);
+                                mInvestmentModel.queryOutsize(OUTSIZE_TYPE);
+                                mInvestmentModel.queryHKInside(HK_TYPE);
+                                dismissProcessDialog();
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("InvestmentActivity","error message = " + e.getMessage().toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        return "";
     }
 }
 

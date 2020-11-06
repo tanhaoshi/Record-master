@@ -88,4 +88,11 @@ public class InvestmentModel extends AndroidViewModel implements LifecycleObserv
     public void updateIndex(){
         queryInsideIndex("1");
     }
+
+    public void deleteIndex(){
+        mRepository.delete();
+        queryInsideIndex("1");
+        queryOutsize("2");
+        queryHKInside("3");
+    }
 }

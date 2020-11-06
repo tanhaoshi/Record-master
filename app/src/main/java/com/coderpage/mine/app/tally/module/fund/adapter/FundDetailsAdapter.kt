@@ -4,6 +4,7 @@ import android.app.Activity
 import android.databinding.DataBindingUtil
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.blankj.utilcode.util.TimeUtils
@@ -12,13 +13,14 @@ import com.coderpage.mine.R
 import com.coderpage.mine.app.tally.module.fund.AdapterFundDetailsBinding
 import com.coderpage.mine.app.tally.module.fund.model.AdapterFDViewModel
 import com.coderpage.mine.app.tally.persistence.model.FundModel
+import com.coderpage.mine.utils.AndroidUtils
 
 /**
  * create by ths on 2020/9/25
  */
 class FundDetailsAdapter() : RecyclerView.Adapter<FundDetailsAdapter.FundDetailsViewHolder>() {
 
-    public fun setData(newList : List<FundModel>){
+     fun setData(newList : List<FundModel>){
         if(newList == null){
             return
         }
@@ -74,10 +76,10 @@ class FundDetailsAdapter() : RecyclerView.Adapter<FundDetailsAdapter.FundDetails
     var adapterFDViewModel : AdapterFDViewModel ?= null
     var list = ArrayList<FundModel>()
 
-    constructor(activity:Activity) : this(){
+    constructor(activity:Activity,adapterFDViewModel: AdapterFDViewModel) : this(){
         this.mActivity = activity
         layoutInflater = LayoutInflater.from(mActivity)
-        adapterFDViewModel = AdapterFDViewModel(MineApp.getAppContext())
+        this.adapterFDViewModel = adapterFDViewModel
     }
 
     inner class FundDetailsViewHolder(var mBinding:AdapterFundDetailsBinding) : RecyclerView.ViewHolder(mBinding.root){
@@ -90,7 +92,12 @@ class FundDetailsAdapter() : RecyclerView.Adapter<FundDetailsAdapter.FundDetails
 
             mBinding.tvCategoryName.text = fundModel.fundName
 
-            mBinding.dateTime.text = TimeUtils.millis2String(fundModel.time,"yyyy-MM-dd")
+            mBinding.dateTime.text = TimeUtils.millis2String(fundModel.time,"yyyy-MM-dd") + "  "+AndroidUtils.getDayOfWeek(TimeUtils.millis2String(fundModel.time,"yyyy-MM-dd"))
+
+            mBinding.rootLayout.setOnLongClickListener {
+                adapterFDViewModel?.setOnLongClick(mActivity!!,fundModel)
+                true
+            }
 
             if(fundModel.fundIncreaseType == 0){
                 mBinding.etAmount.setTextColor(mActivity!!.resources.getColor(R.color.indexRangeUp))

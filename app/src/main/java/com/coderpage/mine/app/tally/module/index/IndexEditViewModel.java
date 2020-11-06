@@ -35,4 +35,13 @@ public class IndexEditViewModel extends AndroidViewModel implements LifecycleObs
             }
         });
     }
+
+    public void updateViewModel(IndexModel indexModel){
+        mRepository.updateRepository(indexModel, new SimpleCallback<Result<Long, IError>>() {
+            @Override
+            public void success(Result<Long, IError> longIErrorResult) {
+                mLiveData.setValue(true);
+            }
+        });
+    }
 }

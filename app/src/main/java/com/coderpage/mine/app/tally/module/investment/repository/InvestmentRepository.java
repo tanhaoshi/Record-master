@@ -56,11 +56,20 @@ public class InvestmentRepository {
 
 
     public void saveIndex(IndexModel indexModel,SimpleCallback<Result<Long,IError>> callback){
-        long id = mDataBase.fundDisposeDao().insert(indexModel.createIndexEntity());
+        long id = mDataBase.indexDao().insert(indexModel.createIndexEntity());
         if(Thread.currentThread() == Looper.getMainLooper().getThread()){
             callback.success(new Result<>(id,null));
         }else{
             MineExecutors.executeOnUiThread(() ->callback.success(new Result<>(id,null)));
         }
+    }
+
+    public void delete(){
+        mDataBase.indexDao().deleteIndex();
+    }
+
+    public void deleteRepository(FundModel fundModel,SimpleCallback<Result<Long,IError>> callback){
+        mDataBase.fundDisposeDao().deleteFund(fundModel.createEntity());
+        callback.success(null);
     }
 }

@@ -40,11 +40,7 @@ class FundDetailsViewModel(application:Application) : AndroidViewModel(applicati
             var tempValue: Double = 0.0
 
             for (fundModel in fundModels) {
-                if (fundModel.fundIncreaseType == 0) {
-                    tempValue += (fundModel.fundPercent.toDouble())
-                } else {
-                    tempValue -= (fundModel.fundPercent.toDouble())
-                }
+                tempValue += (fundModel.fundPercent.toDouble())
             }
             fundWeekObserver.value = DateUtils.double2String(tempValue)
         })
@@ -63,12 +59,9 @@ class FundDetailsViewModel(application:Application) : AndroidViewModel(applicati
             var tempValue: Double = 0.0
 
             for (fundModel in fundModels) {
-                if (fundModel.fundIncreaseType == 0) {
-                    tempValue += (fundModel.fundPercent.toDouble())
-                } else {
-                    tempValue -= (fundModel.fundPercent.toDouble())
-                }
+                tempValue += (fundModel.fundPercent.toDouble())
             }
+
             fundMouthObserver.value = DateUtils.double2String(tempValue)
         })
     }
@@ -79,12 +72,9 @@ class FundDetailsViewModel(application:Application) : AndroidViewModel(applicati
             var tempValue: Double = 0.0
 
             for (fundModel in fundModels) {
-                if (fundModel.fundIncreaseType == 0) {
-                    tempValue += (fundModel.fundPercent.toDouble())
-                } else {
-                    tempValue -= (fundModel.fundPercent.toDouble())
-                }
+                tempValue += (fundModel.fundPercent.toDouble())
             }
+
             fundThreeMouthObserver.value = DateUtils.double2String(tempValue)
         })
     }
@@ -95,12 +85,9 @@ class FundDetailsViewModel(application:Application) : AndroidViewModel(applicati
             var tempValue: Double = 0.0
 
             for (fundModel in fundModels) {
-                if (fundModel.fundIncreaseType == 0) {
-                    tempValue += (fundModel.fundPercent.toDouble())
-                } else {
-                    tempValue -= (fundModel.fundPercent.toDouble())
-                }
+                tempValue += (fundModel.fundPercent.toDouble())
             }
+
             fundHalfYearObserver.value = DateUtils.double2String(tempValue)
         })
     }
@@ -111,12 +98,9 @@ class FundDetailsViewModel(application:Application) : AndroidViewModel(applicati
             var tempValue: Double = 0.0
 
             for (fundModel in fundModels) {
-                if (fundModel.fundIncreaseType == 0) {
-                    tempValue += (fundModel.fundPercent.toDouble())
-                } else {
-                    tempValue -= (fundModel.fundPercent.toDouble())
-                }
+                tempValue += (fundModel.fundPercent.toDouble())
             }
+
             fundYearObserver.value = DateUtils.double2String(tempValue)
         })
     }
@@ -127,12 +111,9 @@ class FundDetailsViewModel(application:Application) : AndroidViewModel(applicati
             var tempValue: Double = 0.0
 
             for (fundModel in fundModels) {
-                if (fundModel.fundIncreaseType == 0) {
-                    tempValue += (fundModel.fundPercent.toDouble())
-                } else {
-                    tempValue -= (fundModel.fundPercent.toDouble())
-                }
+                tempValue += (fundModel.fundPercent.toDouble())
             }
+
             fundThreeYearObserver.value = DateUtils.double2String(tempValue)
         })
     }
@@ -143,12 +124,9 @@ class FundDetailsViewModel(application:Application) : AndroidViewModel(applicati
             var tempValue: Double = 0.0
 
             for (fundModel in fundModels) {
-                if (fundModel.fundIncreaseType == 0) {
-                    tempValue += (fundModel.fundPercent.toDouble())
-                } else {
-                    tempValue -= (fundModel.fundPercent.toDouble())
-                }
+                tempValue += (fundModel.fundPercent.toDouble())
             }
+
             fundFiveYearObserver.value = DateUtils.double2String(tempValue)
         })
     }
@@ -159,12 +137,9 @@ class FundDetailsViewModel(application:Application) : AndroidViewModel(applicati
             var tempValue: Double = 0.0
 
             for (fundModel in fundModels) {
-                if (fundModel.fundIncreaseType == 0) {
-                    tempValue += (fundModel.fundPercent.toDouble())
-                } else {
-                    tempValue -= (fundModel.fundPercent.toDouble())
-                }
+                tempValue += (fundModel.fundPercent.toDouble())
             }
+
             fundStartObserver.value = DateUtils.double2String(tempValue)
         })
     }

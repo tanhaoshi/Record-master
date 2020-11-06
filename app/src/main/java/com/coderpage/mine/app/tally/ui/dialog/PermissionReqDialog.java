@@ -35,6 +35,11 @@ public class PermissionReqDialog extends Dialog {
         initView(activity, permissionArray);
     }
 
+    public PermissionReqDialog(Activity activity,String content,String message){
+        super(activity, R.style.Widget_Dialog);
+        initView(activity, content,message);
+    }
+
     public PermissionReqDialog setTitleText(@Nullable CharSequence title) {
         mTitleTv.setText(title);
         return this;
@@ -70,6 +75,28 @@ public class PermissionReqDialog extends Dialog {
             descTv.setText(PermissionUtils.getPermissionDesc(activity, item));
             lyPermissions.addView(itemView);
         });
+
+        mConfirmButton.setOnClickListener(v -> mListener.onConfirmClick(this));
+        mCancelButton.setOnClickListener(v -> mListener.onCancelClick(this));
+
+        setContentView(contentView);
+        initWindow();
+    }
+
+    private void initView(Activity activity, String content,String message) {
+        View contentView = LayoutInflater.from(activity).inflate(R.layout.layout_dialog_permission_req, null, false);
+        mTitleTv = contentView.findViewById(R.id.tvTitle);
+        mCancelButton = contentView.findViewById(R.id.tvCancel);
+        mConfirmButton = contentView.findViewById(R.id.tvConfirm);
+
+        LinearLayout lyPermissions = contentView.findViewById(R.id.lyPermissions);
+
+            View itemView = LayoutInflater.from(activity).inflate(R.layout.layout_dialog_permission_req_item, null, false);
+            TextView nameTv = itemView.findViewById(R.id.tvPermissionName);
+            TextView descTv = itemView.findViewById(R.id.tvPermissionDesc);
+            nameTv.setText(content);
+            descTv.setText(message);
+            lyPermissions.addView(itemView);
 
         mConfirmButton.setOnClickListener(v -> mListener.onConfirmClick(this));
         mCancelButton.setOnClickListener(v -> mListener.onCancelClick(this));

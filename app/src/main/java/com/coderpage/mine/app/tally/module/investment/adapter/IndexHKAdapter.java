@@ -115,10 +115,10 @@ public class IndexHKAdapter extends RecyclerView.Adapter<IndexHKAdapter.HKVH>{
 
                 mHKBinding.fundDesc.setTextColor(mActivity.getResources().getColor(R.color.indexRangeUp));
             }else{
-                mHKBinding.increase.setText("-" + indexModel.getIndexRange());
+                mHKBinding.increase.setText(indexModel.getIndexRange());
                 mHKBinding.increase.setTextColor(mActivity.getResources().getColor(R.color.categoryIncomeColor4));
 
-                mHKBinding.increasePercent.setText("-"+indexModel.getIndexPercent() + "%");
+                mHKBinding.increasePercent.setText(indexModel.getIndexPercent() + "%");
                 mHKBinding.increasePercent.setTextColor(mActivity.getResources().getColor(R.color.categoryIncomeColor4));
 
                 mHKBinding.fundDesc.setTextColor(mActivity.getResources().getColor(R.color.categoryIncomeColor4));

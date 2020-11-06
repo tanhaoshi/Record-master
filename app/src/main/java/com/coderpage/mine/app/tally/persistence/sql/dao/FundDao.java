@@ -1,8 +1,10 @@
 package com.coderpage.mine.app.tally.persistence.sql.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
 import com.coderpage.mine.app.tally.persistence.model.IndexModel;
@@ -17,7 +19,6 @@ import java.util.List;
 @Dao
 public interface FundDao {
 
-
     // 查询所有的记录
     @Query("select * from fund where fund_type == :type and fund_name == :fundName order by create_time desc")
     List<FundModel> queryAllFund(String type, String fundName);
@@ -29,12 +30,15 @@ public interface FundDao {
     @Insert
     long insert(FundEntity fundEntity);
 
-    @Insert
-    long insert(IndexEntity indexEntity);
-
     @Query("select * from fund group by fund_name order by create_time desc")
     List<FundModel> getAllFund();
 
     @Query("DELETE FROM FUND")
     void deleteAll();
+
+    @Delete
+    void deleteFund(FundEntity fundEntity);
+
+    @Update
+    void update(FundEntity fundEntity);
 }

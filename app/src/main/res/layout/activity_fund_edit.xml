@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout>
-
     <data class=".app.tally.module.fund.FundEditActivityBinding">
         <variable
             name="activity"
@@ -14,85 +13,294 @@
         </variable>
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:fitsSystemWindows="true">
 
         <!-- toolbar -->
-        <android.support.v7.widget.Toolbar
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/toolbar"
-            style="@style/Widget.Toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            app:elevation="0dp"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="@color/appTextColorPrimary" />
+            android:layout_height="wrap_content">
 
-        <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-            android:id="@+id/refreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            app:tr_autoLoadMore="false"
-            app:tr_enable_loadmore="false">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <android.support.v7.widget.Toolbar
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/toolbar"
+                style="@style/Widget.Toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+                app:titleTextColor="@color/appTextColorPrimary"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"/>
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/btnAddRecord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/padding_normal"
-            android:layout_marginBottom="@dimen/padding_normal"
-            android:background="@drawable/bg_accent_btn_round"
-            android:elevation="16dp"
-            android:gravity="center"
-            android:minHeight="48dp"
-            android:onClick="@{() -> vm.onAddNewRecordClick(activity)}"
-            android:paddingStart="36dp"
-            android:paddingEnd="36dp"
-            android:text="@string/tally_add_record"
-            android:textColor="@color/white"
-            android:textSize="@dimen/app_text_size_large"
-            android:textStyle="bold"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+        </android.support.design.widget.AppBarLayout>
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/ivAddNewRecord"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:tint="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_edit" />
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tvAddNewRecord"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_micro"
-                android:gravity="center"
-                android:text="@string/tally_add_fund"
-                android:textColor="@color/white"
-                android:textSize="@dimen/app_text_size_large"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ivAddNewRecord"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+                android:orientation="vertical">
 
-    </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:id="@+id/projectLayout"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/fundTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="基金名称"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/fundName"
+                        android:background="@null"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColorHint="@color/colorHint"
+                        android:textColor="@color/black"
+                        android:hint="基金名称"
+                        android:gravity="center_vertical|end"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/person_gray_color"/>
+
+                <LinearLayout
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/area_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="昨日净值"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/indexArea"
+                        android:background="@null"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColorHint="@color/colorHint"
+                        android:textColor="@color/black"
+                        android:hint="昨日净值"
+                        android:gravity="center_vertical|end"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/person_gray_color"/>
+
+                <LinearLayout
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="当前净值"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/current_index"
+                        android:background="@null"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColorHint="@color/colorHint"
+                        android:textColor="@color/black"
+                        android:hint="当前净值"
+                        android:gravity="center_vertical|end"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/person_gray_color"/>
+
+                <LinearLayout
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="日涨跌类型"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/current_type"
+                        android:background="@null"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColorHint="@color/colorHint"
+                        android:textColor="@color/black"
+                        android:hint="0为涨1为跌"
+                        android:gravity="center_vertical|end"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/person_gray_color"/>
+
+                <LinearLayout
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="日涨跌净值"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/current_range"
+                        android:background="@null"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColorHint="@color/colorHint"
+                        android:textColor="@color/black"
+                        android:hint="日涨跌指数多少"
+                        android:gravity="center_vertical|end"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/person_gray_color"/>
+
+                <LinearLayout
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="日涨跌百分比"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/current_percent"
+                        android:background="@null"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColorHint="@color/colorHint"
+                        android:textColor="@color/black"
+                        android:hint="百分比"
+                        android:gravity="center_vertical|end"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/person_gray_color"/>
+
+                <TextView
+                    android:id="@+id/tvConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="@dimen/padding_normal"
+                    android:layout_marginTop="@dimen/padding_normal"
+                    android:layout_marginEnd="@dimen/padding_normal"
+                    android:background="@drawable/bg_accent_btn_round"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/padding_micro"
+                    android:paddingBottom="@dimen/padding_micro"
+                    android:text="@string/confirm"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/app_text_size_large"/>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>

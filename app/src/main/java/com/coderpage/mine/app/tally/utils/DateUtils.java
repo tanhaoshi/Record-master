@@ -268,7 +268,6 @@ public class DateUtils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.YEAR,year);
-        Log.i("DateUtils","look at current day = " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime().getTime()));
         return cal.getTime().getTime();
     }
 

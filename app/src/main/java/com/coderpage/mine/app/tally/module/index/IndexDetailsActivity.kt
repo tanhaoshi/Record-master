@@ -2,7 +2,6 @@ package com.coderpage.mine.app.tally.module.index
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,7 +10,6 @@ import com.coderpage.mine.R
 import com.coderpage.mine.app.tally.persistence.model.IndexModel
 import com.coderpage.mine.tally.module.index.IndexDetailsActivityBinding
 import com.coderpage.mine.ui.BaseActivity
-import kotlinx.android.synthetic.main.activity_index_details.*
 
 class IndexDetailsActivity : BaseActivity() {
 

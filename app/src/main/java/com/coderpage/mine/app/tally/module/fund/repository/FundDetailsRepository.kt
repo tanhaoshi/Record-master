@@ -1,11 +1,8 @@
 package com.coderpage.mine.app.tally.module.fund.repository
 
-import android.util.Log
-import com.alibaba.fastjson.JSON
 import com.coderpage.base.common.SimpleCallback
 import com.coderpage.concurrency.MineExecutors
 import com.coderpage.mine.app.tally.persistence.model.FundModel
-import com.coderpage.mine.app.tally.persistence.model.IndexModel
 import com.coderpage.mine.app.tally.persistence.sql.TallyDatabase
 import com.coderpage.mine.app.tally.utils.DateUtils
 
@@ -20,8 +17,6 @@ class FundDetailsRepository{
     fun queryLatelyWeek(type: String, indexName: String, simpleCallback: SimpleCallback<List<FundModel>>) {
         MineExecutors.ioExecutor().execute {
             val fundModels = mDatabase.fundDisposeDao().queryLatelyData(type, indexName, DateUtils.getCurrentWeekOneDay(), DateUtils.getCurrentWeekLastDay())
-
-            Log.i("IndexDetailsRepository","look at response json data = " + JSON.toJSONString(fundModels))
 
             if (fundModels != null && fundModels.size > 0) {
                 MineExecutors.executeOnUiThread { simpleCallback.success(fundModels) }
@@ -44,7 +39,6 @@ class FundDetailsRepository{
     fun getLatelyMonthRepository(type:String,fundName:String,simpleCallback: SimpleCallback<List<FundModel>>){
         MineExecutors.ioExecutor().execute {
             var fundModels = mDatabase.fundDisposeDao().queryLatelyData(type,fundName,DateUtils.getCurrentMonthFirstDay(),DateUtils.getCurrentMonthLastDay())
-            Log.i("IndexDetailsRepository","look at response json month data = " + JSON.toJSONString(fundModels))
             if(fundModels != null &&
                     fundModels.size > 0){
                 MineExecutors.executeOnUiThread{simpleCallback.success(fundModels)}
@@ -56,7 +50,6 @@ class FundDetailsRepository{
     fun getUnKnowMonthRepository(type:String,fundName:String,simpleCallback: SimpleCallback<List<FundModel>>) {
         MineExecutors.ioExecutor().execute {
             var indexModels = mDatabase.fundDisposeDao().queryLatelyData(type, fundName, DateUtils.getUnKnowMonthFirstDay(-3), System.currentTimeMillis())
-            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(indexModels))
             if (indexModels != null &&
                     indexModels.size > 0) {
                 MineExecutors.executeOnUiThread { simpleCallback.success(indexModels) }
@@ -68,7 +61,6 @@ class FundDetailsRepository{
     fun getUnKnowHalfRepository(type:String,fundName:String,simpleCallback: SimpleCallback<List<FundModel>>) {
         MineExecutors.ioExecutor().execute {
             var fundModels = mDatabase.fundDisposeDao().queryLatelyData(type, fundName, DateUtils.getUnKnowMonthFirstDay(-6), System.currentTimeMillis())
-            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(fundModels))
             if (fundModels != null &&
                     fundModels.size > 0) {
                 MineExecutors.executeOnUiThread { simpleCallback.success(fundModels) }
@@ -80,7 +72,6 @@ class FundDetailsRepository{
     fun getUnKnowYearRepository(type:String,fundName:String,simpleCallback: SimpleCallback<List<FundModel>>) {
         MineExecutors.ioExecutor().execute {
             var fundModels = mDatabase.fundDisposeDao().queryLatelyData(type, fundName, DateUtils.getUnKnowYearOneDay(-1), System.currentTimeMillis())
-            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(fundModels))
             if (fundModels != null &&
                     fundModels.size > 0) {
                 MineExecutors.executeOnUiThread { simpleCallback.success(fundModels) }
@@ -92,7 +83,6 @@ class FundDetailsRepository{
     fun getThreeYearRepository(type:String,fundName:String,simpleCallback: SimpleCallback<List<FundModel>>) {
         MineExecutors.ioExecutor().execute {
             var fundModels = mDatabase.fundDisposeDao().queryLatelyData(type, fundName, DateUtils.getUnKnowYearOneDay(-3), System.currentTimeMillis())
-            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(fundModels))
             if (fundModels != null &&
                     fundModels.size > 0) {
                 MineExecutors.executeOnUiThread { simpleCallback.success(fundModels) }
@@ -104,7 +94,6 @@ class FundDetailsRepository{
     fun getFiveYearRepository(type:String,fundName:String,simpleCallback: SimpleCallback<List<FundModel>>) {
         MineExecutors.ioExecutor().execute {
             var fundModels = mDatabase.fundDisposeDao().queryLatelyData(type, fundName, DateUtils.getUnKnowYearOneDay(-5), System.currentTimeMillis())
-            Log.i("IndexDetailsRepository", "look at response json month data = " + JSON.toJSONString(fundModels))
             if (fundModels != null &&
                     fundModels.size > 0) {
                 MineExecutors.executeOnUiThread { simpleCallback.success(fundModels) }

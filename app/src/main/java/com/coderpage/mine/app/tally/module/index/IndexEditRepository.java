@@ -24,4 +24,8 @@ public class IndexEditRepository {
             MineExecutors.executeOnUiThread(() ->simpleCallback.success(new Result<>(id,null)));
         });
     }
+
+    public void updateRepository(IndexModel indexModel,SimpleCallback<Result<Long,IError>> simpleCallback){
+        mDatabase.indexDao().update(indexModel.createIndexEntity());
+    }
 }

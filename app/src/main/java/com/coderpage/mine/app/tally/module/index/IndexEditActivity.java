@@ -50,7 +50,9 @@ public class IndexEditActivity extends BaseActivity {
         setToolbarTitle(getResources().getString(R.string.menu_tally_investment));
 
         getIntentData();
+
         initView();
+
         subscribeUi();
     }
 
@@ -63,7 +65,11 @@ public class IndexEditActivity extends BaseActivity {
 
         if(mIndexModel != null){
             mBinding.indexName.setText(mIndexModel.getIndexName());
-            mBinding.indexArea.setText(mIndexModel.getIndexType());
+            mBinding.indexArea.setText(mIndexModel.getIndexType()+"(1A股,2国外,3外围)");
+            mBinding.currentIndex.setText(mIndexModel.getIndexNumber());
+            mBinding.currentType.setText(mIndexModel.getIndexIncreaseType() + "(0为涨1为跌)");
+            mBinding.currentRange.setText(mIndexModel.getIndexRange());
+            mBinding.currentPercent.setText(mIndexModel.getIndexPercent() + "%");
         }
     }
 
@@ -108,15 +114,16 @@ public class IndexEditActivity extends BaseActivity {
         }
 
         IndexModel indexModel = new IndexModel();
+        indexModel.setId(mIndexModel.getId());
         indexModel.setFundSyncId(System.currentTimeMillis());
         indexModel.setIndexName(mBinding.indexName.getText().toString());
         indexModel.setIndexType(mBinding.indexArea.getText().toString());
         indexModel.setIndexNumber(mBinding.currentIndex.getText().toString());
         indexModel.setIndexRange(mBinding.currentRange.getText().toString());
         indexModel.setIndexPercent(mBinding.currentPercent.getText().toString());
-        indexModel.setIndexIncreaseType(Integer.valueOf(mBinding.currentType.getText().toString()));
+        indexModel.setIndexIncreaseType(Integer.valueOf(mBinding.currentType.getText().toString().substring(0,1)));
 
-        mEditViewModel.saveIndexData(indexModel);
+        mEditViewModel.updateViewModel(indexModel);
     }
 
     private void subscribeUi() {
@@ -126,7 +133,7 @@ public class IndexEditActivity extends BaseActivity {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if(aBoolean){
-                    Toast.makeText(IndexEditActivity.this,"添加成功!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IndexEditActivity.this,"更新成功!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
@@ -156,8 +163,4 @@ public class IndexEditActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 }

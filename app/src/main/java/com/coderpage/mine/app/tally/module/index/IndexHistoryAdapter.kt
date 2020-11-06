@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.TimeUtils
 import com.coderpage.mine.MineApp
 import com.coderpage.mine.R
 import com.coderpage.mine.app.tally.persistence.model.IndexModel
+import com.coderpage.mine.utils.AndroidUtils
 
 /**
  * create by ths on 2020/9/22
@@ -27,7 +28,7 @@ class IndexHistoryAdapter(): RecyclerView.Adapter<IndexHistoryAdapter.HistoryVH>
          indexHistoryViewModel = IndexHistoryViewModel(MineApp.getAppContext())
       }
 
-      public fun setData(newList: List<IndexModel>){
+      fun setData(newList: List<IndexModel>){
           if(newList == null){
              return
           }
@@ -78,16 +79,21 @@ class IndexHistoryAdapter(): RecyclerView.Adapter<IndexHistoryAdapter.HistoryVH>
           holder.bindTo(list[position])
       }
 
-      public inner class HistoryVH(var mBinding : AdapterIndexHistoryBinding) : RecyclerView.ViewHolder(mBinding.root){
+       inner class HistoryVH(var mBinding : AdapterIndexHistoryBinding) : RecyclerView.ViewHolder(mBinding.root){
 
-          public fun bindTo(indexModel: IndexModel){
+           fun bindTo(indexModel: IndexModel){
               mBinding.data = indexModel
               mBinding.vm   = indexHistoryViewModel
               mBinding.activity = mActivity
               mBinding.executePendingBindings()
 
               mBinding.tvCategoryName.text = indexModel.indexName
-              mBinding.tvRecordDec.text = TimeUtils.millis2String(indexModel.time,"yyyy-MM-dd")
+              mBinding.tvRecordDec.text = TimeUtils.millis2String(indexModel.time,"yyyy-MM-dd") +"  "+AndroidUtils.getDayOfWeek(TimeUtils.millis2String(indexModel.time,"yyyy-MM-dd"))
+
+               mBinding.rootLayout.setOnLongClickListener {
+                   indexHistoryViewModel?.setOnLongClick(mActivity,indexModel)
+                   true
+               }
 
               if(indexModel.indexIncreaseType == 0){
                   mBinding.etAmount.setTextColor(mActivity!!.resources.getColor(R.color.indexRangeUp))

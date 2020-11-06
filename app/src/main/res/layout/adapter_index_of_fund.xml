@@ -20,14 +20,16 @@
             type="com.coderpage.mine.app.tally.module.investment.model.IndexFundViewModel" />
 
     </data>
-
+<!--    android:onLongClick="@{(v) -> vm.onItemLongClick(activity,data)}"-->
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="92dp"
+        android:id="@+id/rootLayout"
         android:onClick="@{(v) -> vm.onItemClick(v,activity,data)}"
+        android:longClickable="true"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"

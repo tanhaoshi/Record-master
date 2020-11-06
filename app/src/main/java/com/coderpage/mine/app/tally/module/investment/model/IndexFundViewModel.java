@@ -5,18 +5,24 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
 import com.coderpage.base.common.IError;
 import com.coderpage.base.common.Result;
 import com.coderpage.base.common.SimpleCallback;
 import com.coderpage.base.utils.UIUtils;
+import com.coderpage.mine.app.tally.module.fund.FundEditActivity;
 import com.coderpage.mine.app.tally.module.investment.repository.InvestmentRepository;
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
 import com.coderpage.mine.app.tally.persistence.model.IndexModel;
 import com.coderpage.mine.app.tally.ui.dialog.FundEditIndexDialog;
+import com.coderpage.mine.app.tally.ui.dialog.PermissionReqDialog;
 
 /**
  * create by ths on 2020/9/16
@@ -33,24 +39,30 @@ public class IndexFundViewModel extends AndroidViewModel implements LifecycleObs
     }
 
     public void onItemClick(View view, Activity activity, FundModel fundModel){
-        new FundEditIndexDialog(activity).setListener((dialog, percent,rangeType) -> {
-            FundModel model = new FundModel();
-            model.setFundName(fundModel.getFundName());
-            model.setFundNumber(fundModel.getFundNumber());
-            model.setTime(System.currentTimeMillis());
-            model.setFundType("1");
-            model.setFundPercent(percent);
-            model.setFundSyncId(System.currentTimeMillis());
-            model.setFundIncreaseType(Integer.valueOf(rangeType));
-            mRepository.saveFund(model, new SimpleCallback<Result<Long, IError>>() {
-                @Override
-                public void success(Result<Long, IError> longIErrorResult) {
-                    UIUtils.hideSoftKeyboard(activity,view);
-                    observerUpdate.setValue(true);
-                }
-            });
-            dialog.dismiss();
-        }).show();
+        Intent intent = new Intent(activity, FundEditActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("fundModel",fundModel);
+        intent.putExtra("bundle",bundle);
+        activity.startActivity(intent);
+    }
+
+    public void onItemLongClick(Activity activity,FundModel fundModel){
+        new PermissionReqDialog(activity,"是否确定删除该条数据","请确认!")
+                .setTitleText("温馨提示!")
+                .setPositiveText("确认")
+                .setListener(new PermissionReqDialog.Listener() {
+                    @Override
+                    public void onCancelClick(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onConfirmClick(DialogInterface dialog) {
+                        deleteViewModel(fundModel);
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     public void insertFundData(FundModel fundModel){
@@ -66,4 +78,12 @@ public class IndexFundViewModel extends AndroidViewModel implements LifecycleObs
         observerUpdate.setValue(true);
     }
 
+    public void deleteViewModel(FundModel fundModel){
+        mRepository.deleteRepository(fundModel, new SimpleCallback<Result<Long, IError>>() {
+            @Override
+            public void success(Result<Long, IError> longIErrorResult) {
+                observerUpdate.setValue(true);
+            }
+        });
+    }
 }

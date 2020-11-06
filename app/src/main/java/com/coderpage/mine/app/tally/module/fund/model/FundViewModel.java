@@ -29,6 +29,8 @@ public class FundViewModel extends AndroidViewModel implements LifecycleObserver
 
     public MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
+    public MutableLiveData<Boolean> alertMessage = new MutableLiveData<>();
+
     public FundViewModel(@NonNull Application application) {
         super(application);
         mRepository = new FundRepository();
@@ -61,23 +63,17 @@ public class FundViewModel extends AndroidViewModel implements LifecycleObserver
         });
     }
 
-    public void onAddNewRecordClick(Activity activity) {
-        new FundEditDialog(activity).setListener((dialog, name,code) -> {
-            FundModel fundModel = new FundModel();
-            fundModel.setFundName(name);
-            fundModel.setFundNumber(code);
-            fundModel.setFundSyncId(System.currentTimeMillis());
-            fundModel.setTime(System.currentTimeMillis());
-            fundModel.setFundType("1");
-            fundModel.setFundPercent("0");
-            saveData(fundModel);
-            dialog.dismiss();
-        }).show();
-    }
-
-
     public void deleteAllOfModel(){
         mRepository.deleteAllOfRepository();
         initData();
+    }
+
+    public void updateViewModel(FundModel fundModel){
+        mRepository.updateRepository(fundModel, new SimpleCallback<Result<Long, IError>>() {
+            @Override
+            public void success(Result<Long, IError> longIErrorResult) {
+                alertMessage.postValue(true);
+            }
+        });
     }
 }

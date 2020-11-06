@@ -1,8 +1,11 @@
 package com.coderpage.mine.app.tally.persistence.sql.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.coderpage.mine.app.tally.persistence.model.IndexModel;
 import com.coderpage.mine.app.tally.persistence.sql.entity.IndexEntity;
@@ -18,12 +21,21 @@ public interface IndexDao {
     @Insert
     long insert(IndexEntity indexEntity);
 
+    @Update
+    void update(IndexEntity indexEntity);
+
+    @Delete
+    void deleteIndex(IndexEntity indexEntity);
+
+    @Query("DELETE  FROM INDEXS where index_id=:id")
+    void deleteIndexs(long id);
+
+    @Query("DELETE FROM INDEXS")
+    void deleteIndex();
+
     @Query("select * from indexs where index_type == :type group by index_name order by create_time asc ")
     List<IndexModel> getInsideIndex(String type);
 
-    // <= datetime('now','start of day','+0 day','weekday 1')
-
-    // >= datetime('now','start of day','-6day')
     // 查询近一周数据
     @Query("select * from indexs where index_type == :type and index_name == :indexName and " +
             "create_time <= :endTime and create_time >= :startTime")
@@ -57,5 +69,4 @@ public interface IndexDao {
     @Query("select * from indexs where datetime(create_time) >= datetime(:startTime) and datetime(create_time) <= datetime(:endTime) " +
             "and index_type == :type and index_name == :indexName")
     List<IndexModel> queryLayelyYear(String type,String indexName,String startTime,String endTime);
-
 }

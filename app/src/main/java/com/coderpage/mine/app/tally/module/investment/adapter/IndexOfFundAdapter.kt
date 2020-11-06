@@ -4,8 +4,10 @@ import android.app.Activity
 import android.databinding.DataBindingUtil
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.alibaba.fastjson.JSON
 import com.blankj.utilcode.util.TimeUtils
 
 import com.coderpage.mine.MineApp
@@ -94,6 +96,13 @@ class IndexOfFundAdapter(private val mActivity: Activity, private val mFundViewM
             }
 
             mBinding.dateTime.text = TimeUtils.date2String(Date(fundModel.time),"yyyy-MM-dd : HH:mm:ss")
+
+            mBinding.rootLayout.setOnLongClickListener {
+                mFundViewModel.onItemLongClick(mActivity,fundModel)
+                true
+            }
         }
+
     }
+
 }

@@ -115,10 +115,10 @@ public class IndexInsideAdapter extends RecyclerView.Adapter<IndexInsideAdapter.
 
                 mBinding.fundDesc.setTextColor(mActivity.getResources().getColor(R.color.indexRangeUp));
             }else{
-                mBinding.increase.setText("-" + indexModel.getIndexRange());
+                mBinding.increase.setText(indexModel.getIndexRange());
                 mBinding.increase.setTextColor(mActivity.getResources().getColor(R.color.categoryIncomeColor4));
 
-                mBinding.increasePercent.setText("-"+indexModel.getIndexPercent() + "%");
+                mBinding.increasePercent.setText(indexModel.getIndexPercent() + "%");
                 mBinding.increasePercent.setTextColor(mActivity.getResources().getColor(R.color.categoryIncomeColor4));
 
                 mBinding.fundDesc.setTextColor(mActivity.getResources().getColor(R.color.categoryIncomeColor4));

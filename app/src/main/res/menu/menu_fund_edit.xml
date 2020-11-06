@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/edit_delete"
-        android:title="删除数据"
+        android:id="@+id/edit_details"
+        android:title="详情"
         android:visible="true"
         app:showAsAction="never"/>
+
+<!--    <item-->
+<!--        android:id="@+id/edit_delete"-->
+<!--        android:title="删除数据"-->
+<!--        android:visible="true"-->
+<!--        app:showAsAction="never"/>-->
+
 </menu>

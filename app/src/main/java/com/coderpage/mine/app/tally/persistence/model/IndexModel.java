@@ -169,6 +169,7 @@ public class IndexModel implements Serializable {
 
     public IndexEntity createIndexEntity(){
         IndexEntity indexEntity = new IndexEntity();
+        indexEntity.setId(getId());
         indexEntity.setFundSyncId(getFundSyncId());
         indexEntity.setIndexName(getIndexName());
         indexEntity.setIndexType(getIndexType());

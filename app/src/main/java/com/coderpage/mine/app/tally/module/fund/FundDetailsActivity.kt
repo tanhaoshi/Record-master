@@ -5,21 +5,24 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import com.coderpage.mine.MineApp
 
 import com.coderpage.mine.R
 import com.coderpage.mine.app.tally.module.fund.adapter.FundDetailsAdapter
+import com.coderpage.mine.app.tally.module.fund.model.AdapterFDViewModel
 import com.coderpage.mine.app.tally.module.fund.model.FundDetailsViewModel
 import com.coderpage.mine.app.tally.module.index.IndexDetailsViewModel
 import com.coderpage.mine.app.tally.persistence.model.FundModel
 import com.coderpage.mine.tally.module.fund.FundDetailsActivityBinding
 import com.coderpage.mine.ui.BaseActivity
 
-class FunDetailsActivity : BaseActivity() {
+class FundDetailsActivity : BaseActivity() {
 
-    internal var mBinding: FundDetailsActivityBinding ?= null
-    internal var mViewModel :FundDetailsViewModel ?= null
-    var fundDetailsAdapter : FundDetailsAdapter ?= null
-    private var mFundModel : FundModel ?= null
+    internal var mBinding   : FundDetailsActivityBinding ?= null
+    internal var mViewModel : FundDetailsViewModel ?= null
+    var fundDetailsAdapter  : FundDetailsAdapter ?= null
+    private var mFundModel  : FundModel ?= null
+    var adapterFDViewModel  : AdapterFDViewModel ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +55,9 @@ class FunDetailsActivity : BaseActivity() {
         var recyclerView           = mBinding!!.recyclerView
         recyclerView.layoutManager = linearLayoutManager
 
-        fundDetailsAdapter = FundDetailsAdapter(this)
+        adapterFDViewModel = AdapterFDViewModel(MineApp.getAppContext())
+
+        fundDetailsAdapter = FundDetailsAdapter(this, adapterFDViewModel!!)
         recyclerView.adapter = fundDetailsAdapter
 
         mViewModel?.fundHistoryObserver?.observe(this, Observer {

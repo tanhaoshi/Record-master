@@ -7,17 +7,11 @@ import android.arch.lifecycle.LifecycleObserver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 
-import com.coderpage.base.common.IError;
-import com.coderpage.base.common.Result;
-import com.coderpage.base.common.SimpleCallback;
-import com.coderpage.mine.app.tally.module.fund.FunDetailsActivity;
+import com.coderpage.mine.app.tally.module.fund.FundDetailsActivity;
 import com.coderpage.mine.app.tally.module.fund.repository.FundRepository;
 import com.coderpage.mine.app.tally.persistence.model.FundModel;
-import com.coderpage.mine.app.tally.ui.dialog.FundEditIndexDialog;
-import com.coderpage.mine.app.tally.ui.dialog.SetBudgetMonthDialog;
 
 /**
  * create by ths on 2020/9/10
@@ -32,7 +26,7 @@ public class FundAdapterViewModel extends AndroidViewModel implements LifecycleO
     }
 
     public void onItemClick(View view, Activity activity, FundModel fundModel){
-        Intent intent = new Intent(activity, FunDetailsActivity.class);
+        Intent intent = new Intent(activity, FundDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("fundModel",fundModel);
         intent.putExtra("bundle",bundle);
